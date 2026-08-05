@@ -1,0 +1,13 @@
+{
+  "away_team": "Violet Sparks",
+  "disclaimer": "Synthetic demonstration — not evidence of real-world predictive performance.",
+  "expected_away_goals": 1.2581733618855513,
+  "expected_home_goals": 0.9809085583039203,
+  "fixture_id": "SYN-EXAMPLE",
+  "home_team": "Amber Owls",
+  "probabilities": {
+    "away_win": 0.4266987595128253,
+    "draw": 0.28465300699030827,
+    "home_win": 0.28864823349686647
+  }
+}

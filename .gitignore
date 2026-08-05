@@ -1,0 +1,54 @@
+# Python environments and build output
+.venv/
+venv/
+build/
+dist/
+*.egg-info/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Credentials and environment files
+.env
+.env.*
+!.env.example
+credentials/
+**/credentials/
+*.key
+*.pem
+*.p12
+*.pfx
+*.crt
+*.cer
+*.token
+*_token.txt
+
+# Local databases and archives
+*.db
+*.sqlite
+*.sqlite3
+*.zip
+*.tar
+*.tar.gz
+
+# Provider payloads, snapshots and operational records
+data/raw/
+data/interim/
+data/processed/
+data/provider/
+provider_payloads/
+snapshots/
+acceptance_records/
+ledgers/
+checkpoints/
+
+# Logs, private reports and real-data model artifacts
+*.log
+logs/
+reports/private/
+reports/evidence/
+models/
+artifacts/private/

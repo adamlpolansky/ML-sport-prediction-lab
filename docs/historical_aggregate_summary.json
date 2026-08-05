@@ -1,0 +1,16 @@
+{
+  "attribution": "Aggregate results from a private historical evaluation using Football-Data.co.uk source data.",
+  "candidate_minus_historical_log_loss": -0.035993,
+  "decision": "Retain historical-frequency fallback",
+  "development_matches": 5700,
+  "metrics": {
+    "accuracy": 0.452632,
+    "brier_score": 0.629821,
+    "ece": 0.043633,
+    "log_loss": 1.046297
+  },
+  "oos_lockbox_matches": 380,
+  "precommitted_interval": [-0.072155, 0.001383],
+  "redistribution_note": "No match-level source data or predictions are distributed; the public clone cannot reproduce these exact historical figures.",
+  "total_matches": 6080
+}

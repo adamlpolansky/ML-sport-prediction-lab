@@ -1,0 +1,28 @@
+{
+  "disclaimer": "Synthetic demonstration — not evidence of real-world predictive performance.",
+  "max_goals": 10,
+  "mean_away_goals": 1.046875,
+  "mean_home_goals": 1.46875,
+  "team_attack": {
+    "Amber Owls": 1.3409598214285714,
+    "Azure Rovers": 1.0248579545454546,
+    "Copper Comets": 1.2165178571428572,
+    "Golden Kites": 1.2165178571428572,
+    "Ivory Foxes": 1.1688988095238095,
+    "Jade Harriers": 1.4546130952380953,
+    "Silver Pines": 1.4546130952380953,
+    "Violet Sparks": 1.1688988095238095
+  },
+  "team_defence": {
+    "Amber Owls": 1.6266741071428572,
+    "Azure Rovers": 1.1157670454545454,
+    "Copper Comets": 1.2165178571428572,
+    "Golden Kites": 1.2641369047619047,
+    "Ivory Foxes": 1.359375,
+    "Jade Harriers": 1.359375,
+    "Silver Pines": 1.2165178571428572,
+    "Violet Sparks": 0.7879464285714286
+  },
+  "training_data_kind": "synthetic",
+  "training_rows": 64
+}

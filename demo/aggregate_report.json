@@ -1,0 +1,35 @@
+{
+  "accuracy": 0.40625,
+  "brier_score": 0.6591296771621094,
+  "calibration_bins": [
+    {
+      "bin": "[0.2, 0.3)",
+      "count": 50,
+      "empirical_frequency": 0.3,
+      "mean_probability": 0.25894238779604994
+    },
+    {
+      "bin": "[0.3, 0.4)",
+      "count": 20,
+      "empirical_frequency": 0.3,
+      "mean_probability": 0.3386077287296149
+    },
+    {
+      "bin": "[0.4, 0.5)",
+      "count": 16,
+      "empirical_frequency": 0.375,
+      "mean_probability": 0.43665808128041184
+    },
+    {
+      "bin": "[0.5, 0.6)",
+      "count": 10,
+      "empirical_frequency": 0.5,
+      "mean_probability": 0.5294196735118614
+    }
+  ],
+  "disclaimer": "Synthetic demonstration — not evidence of real-world predictive performance.",
+  "ece": 0.04276834604578129,
+  "evaluation_rows": 32,
+  "log_loss": 1.0883408072221479,
+  "split": "chronological synthetic holdout"
+}

@@ -1,0 +1,19 @@
+{
+  "code_sha256": "dd774084e07885ac5ae1270e8b29bc358fc15faa69bcf294e3e67010e4a2de6d",
+  "code_version": "0.1.0",
+  "config_sha256": "2b6d4c43dfe795942d1b501fcfc06f67f891a34c6039c4c591d378f8a2c75459",
+  "disclaimer": "Synthetic demonstration — not evidence of real-world predictive performance.",
+  "evaluation_rows": 32,
+  "generated_sha256": {
+    "aggregate_report.json": "08534e9bf72a99b177dc613bf2b2580897a31376546eedacca9d6e719f5e30af",
+    "aggregate_report.md": "21ef6f5f7eb1a27060deb01c138341d2da2900504cdfda19bdb31b33cb4394cc",
+    "calibration_reliability.png": "dc75310b8c136cb41827eaa674a670466e94e4bf37e7db31fb975cbef90c33f0",
+    "prediction_example.json": "4f334e6cb189a31da8e9c741568347df86cecc35c0d1396b9b8c451303a444dd",
+    "synthetic_fixtures.csv": "74de702945428380224d95a38c41e56704f634212c69c949bf881d0651e658de",
+    "synthetic_model.json": "7b59b26582eb3d344ee7601ef0b3337c3d6db0f6696e5048fecdf06ee4c42230"
+  },
+  "provider_requests": 0,
+  "seed": 20260805,
+  "synthetic_fixture_rows": 96,
+  "training_rows": 64
+}
