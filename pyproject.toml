@@ -20,6 +20,7 @@ dev = ["build>=1,<2", "pytest>=8,<9", "ruff>=0.9,<1", "twine>=5,<7"]
 epl-probability-demo = "epl_probability_lab.demo:main"
 epl-feature-demo = "epl_probability_lab.feature_demo:main"
 epl-publication-check = "epl_probability_lab.publication:main"
+epl-challenger-release-check = "epl_probability_lab.challenger_release:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

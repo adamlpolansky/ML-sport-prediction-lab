@@ -3,7 +3,8 @@
 ## Overview
 
 The public project contains an independent-Poisson teaching demo, a v0.2 chronological feature
-engine, and one timestamped EPL 2026/27 Matchweek 1 forecast pack. The demos and feature evidence
+engine, an immutable EPL 2026/27 Matchweek 1 incumbent forecast, and an append-only exploratory
+Elo–Poisson challenger pack. The demos and feature evidence
 execute offline on deterministic fictional fixtures. The forecast pack is a narrow release of real
 fixture identities and sanitized derived probabilities; its fitted artifact and historical rows are
 not distributed. Adam Luboš Polanský authors the distributed code, synthetic examples, and forecast
@@ -25,9 +26,12 @@ performance. Tier-seeded Elo is implemented but not empirically evaluated and is
 eligible. The feature-engineering candidate was not promoted; the dynamic Dixon–Coles incumbent was
 retained.
 
-The Matchweek 1 pack uses the retained Dynamic Dixon–Coles incumbent, not the unpromoted v0.2
-feature candidate. Its ten rows are prospective forecasts generated before the first kickoff. They
-are not results, betting advice, or a new performance/promotion claim.
+The original Matchweek 1 pack uses the retained Dynamic Dixon–Coles incumbent, not the unpromoted
+v0.2 feature candidate. The challenger was designed after reviewing the shape of that forecast and
+was not trained or selected for exact-score diversity. Both packs contain ten prospective rows
+generated before the first kickoff. The challenger has a favorable frozen paired OOS research
+signal but is not automatically promoted. Neither pack is a result, betting advice, evidence of
+profit, or a deployment claim.
 
 ## Leakage controls
 

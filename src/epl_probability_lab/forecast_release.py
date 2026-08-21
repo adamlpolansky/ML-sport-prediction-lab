@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import csv
+import hashlib
 import io
 import json
 import math
@@ -16,6 +17,8 @@ JSON_PATH = FORECAST_DIRECTORY / "forecast.json"
 CSV_PATH = FORECAST_DIRECTORY / "forecast.csv"
 README_PATH = FORECAST_DIRECTORY / "README.md"
 ROOT_README_PATH = Path("README.md")
+JSON_SHA256 = "de5075834b6e6c6a873df6de6f3eb53ad0e71ee756b20c5e18ac1143658a571b"
+CSV_SHA256 = "0758a47cdb3702afad0c382e9730ca8d1964b9afce59232444d8a9920e5b979b"
 
 FIELDS = (
     "forecast_id",
@@ -292,6 +295,9 @@ def validate_release_contents(items: Mapping[str, bytes]) -> list[dict[str, Any]
     missing = [path.as_posix() for path in required if path.as_posix() not in items]
     if missing:
         raise ForecastReleaseError(f"forecast release files are missing: {', '.join(missing)}")
+    for path, expected in ((JSON_PATH, JSON_SHA256), (CSV_PATH, CSV_SHA256)):
+        if hashlib.sha256(items[path.as_posix()]).hexdigest() != expected:
+            raise ForecastReleaseError(f"immutable {path.as_posix()} bytes changed")
     json_rows = load_json_rows(items[JSON_PATH.as_posix()])
     csv_rows = load_csv_rows(items[CSV_PATH.as_posix()])
     if json_rows != csv_rows:

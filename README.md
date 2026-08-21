@@ -104,4 +104,31 @@ Fixture facts are revision-pinned OpenFootball CC0 data; the derived forecast da
 with attribution to Adam Luboš Polanský. The private fitted artifact and historical rows are not
 distributed. The v0.2 feature candidate was not promoted and did not drive this forecast.
 
+## Exploratory Elo–Poisson challenger
+
+An append-only [Elo–Poisson challenger pack](forecasts/2026-27/matchday-01/challengers/elo-poisson-v1/README.md)
+now sits beside the immutable Dynamic Dixon–Coles v1 forecast. It was designed after reviewing the
+shape of v1, did not optimize exact-score diversity, and is not automatically promoted. Its frozen
+paired OOS evidence is favorable enough for the label `ELO_CHALLENGER_VALID_RESEARCH_SIGNAL`, while
+v1 remains the incumbent release. Private history, match-level OOS rows, fitted coefficients, and
+Elo state are not distributed.
+
+<!-- challenger-table:start -->
+| Kickoff (Europe/London) | Fixture | Home | Draw | Away | Expected goals λ (H–A) | Top 3 scorelines | Model | Status |
+| --- | --- | ---: | ---: | ---: | ---: | --- | --- | --- |
+| 2026-08-21 20:00 | Arsenal — Coventry City | 75.9% | 15.2% | 8.9% | 2.51–0.74 | 2–0 (12.2%); 3–0 (10.2%); 1–0 (9.7%) | `fixed-elo-neutral-reentry-poisson-v1` | `prospective_pre_match_challenger` |
+| 2026-08-22 12:30 | Hull City — Manchester United | 24.0% | 24.2% | 51.8% | 1.06–1.68 | 1–1 (11.5%); 0–1 (10.8%); 1–2 (9.7%) | `fixed-elo-neutral-reentry-poisson-v1` | `prospective_pre_match_challenger` |
+| 2026-08-22 15:00 | Everton — Crystal Palace | 43.9% | 25.5% | 30.6% | 1.50–1.21 | 1–1 (12.1%); 1–0 (10.0%); 2–1 (9.1%) | `fixed-elo-neutral-reentry-poisson-v1` | `prospective_pre_match_challenger` |
+| 2026-08-22 15:00 | Ipswich Town — Sunderland | 34.1% | 25.8% | 40.1% | 1.28–1.41 | 1–1 (12.3%); 0–1 (9.6%); 1–0 (8.7%) | `fixed-elo-neutral-reentry-poisson-v1` | `prospective_pre_match_challenger` |
+| 2026-08-22 15:00 | Nottingham Forest — Leeds United | 46.0% | 25.2% | 28.8% | 1.55–1.17 | 1–1 (12.0%); 1–0 (10.2%); 2–1 (9.3%) | `fixed-elo-neutral-reentry-poisson-v1` | `prospective_pre_match_challenger` |
+| 2026-08-22 17:30 | Brentford — Tottenham Hotspur | 52.2% | 24.0% | 23.8% | 1.70–1.07 | 1–1 (11.4%); 1–0 (10.6%); 2–1 (9.7%) | `fixed-elo-neutral-reentry-poisson-v1` | `prospective_pre_match_challenger` |
+| 2026-08-23 14:00 | Brighton & Hove Albion — Aston Villa | 38.0% | 25.9% | 36.1% | 1.36–1.32 | 1–1 (12.3%); 1–0 (9.3%); 0–1 (9.0%) | `fixed-elo-neutral-reentry-poisson-v1` | `prospective_pre_match_challenger` |
+| 2026-08-23 14:00 | Manchester City — AFC Bournemouth | 56.8% | 22.8% | 20.4% | 1.83–1.00 | 1–0 (10.8%); 1–1 (10.8%); 2–0 (9.9%) | `fixed-elo-neutral-reentry-poisson-v1` | `prospective_pre_match_challenger` |
+| 2026-08-23 16:30 | Newcastle United — Liverpool | 34.8% | 25.9% | 39.3% | 1.29–1.39 | 1–1 (12.3%); 0–1 (9.5%); 1–0 (8.8%) | `fixed-elo-neutral-reentry-poisson-v1` | `prospective_pre_match_challenger` |
+| 2026-08-24 20:00 | Fulham — Chelsea | 40.8% | 25.8% | 33.4% | 1.43–1.27 | 1–1 (12.2%); 1–0 (9.7%); 2–1 (8.7%) | `fixed-elo-neutral-reentry-poisson-v1` | `prospective_pre_match_challenger` |
+<!-- challenger-table:end -->
+
+The published lambdas reproduce every listed probability through a validated independent-Poisson
+matrix. This remains research output, not betting advice or a profitability claim.
+
 Independent research project; not affiliated with or endorsed by the Premier League or its clubs.

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 import shutil
 from pathlib import Path
@@ -31,6 +32,12 @@ def test_committed_forecast_pack_is_exact_and_cross_format_consistent() -> None:
     assert {row["information_cutoff_utc"] for row in rows} == {"2026-08-21T12:04:19Z"}
     assert inspect_paths([(JSON_PATH.as_posix(), (ROOT / JSON_PATH).read_bytes())]) == []
     assert inspect_paths([(CSV_PATH.as_posix(), (ROOT / CSV_PATH).read_bytes())]) == []
+    assert hashlib.sha256((ROOT / JSON_PATH).read_bytes()).hexdigest() == (
+        "de5075834b6e6c6a873df6de6f3eb53ad0e71ee756b20c5e18ac1143658a571b"
+    )
+    assert hashlib.sha256((ROOT / CSV_PATH).read_bytes()).hexdigest() == (
+        "0758a47cdb3702afad0c382e9730ca8d1964b9afce59232444d8a9920e5b979b"
+    )
 
 
 @pytest.mark.parametrize("forbidden", ["provider_id", "home_goals", "result", "odds_home"])
