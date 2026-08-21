@@ -1,11 +1,38 @@
 from __future__ import annotations
 
+from epl_probability_lab.demo import DEFAULT_DEMO_CONFIG
 from epl_probability_lab.publication import inspect_paths
+from epl_probability_lab.synthetic import generate_fixtures
+
+
+def _fixture_csv_bytes() -> bytes:
+    import csv
+    import io
+
+    from epl_probability_lab.synthetic import FIELDNAMES
+
+    handle = io.StringIO(newline="")
+    writer = csv.DictWriter(handle, fieldnames=FIELDNAMES, lineterminator="\n")
+    writer.writeheader()
+    writer.writerows(
+        generate_fixtures(DEFAULT_DEMO_CONFIG["seed"], DEFAULT_DEMO_CONFIG["fixture_rows"])
+    )
+    return handle.getvalue().encode()
 
 
 def test_safe_synthetic_artifact_is_accepted() -> None:
-    content = b"fixture_id,home_team,away_team\nfictional-1,Aster,Beacon\n"
-    assert inspect_paths([("demo/synthetic_fixtures.csv", content)]) == []
+    assert inspect_paths([("demo/synthetic_fixtures.csv", _fixture_csv_bytes())]) == []
+
+
+def test_real_row_disguised_as_approved_synthetic_fixture_is_rejected() -> None:
+    content = (
+        b"fixture_id,match_date,home_team,away_team,home_goals,away_goals,result,"
+        b"data_kind,disclaimer\nreal-1,2026-08-21,Arsenal,Chelsea,0,0,D,synthetic,fictional\n"
+    )
+    reasons = {
+        violation.reason for violation in inspect_paths([("demo/synthetic_fixtures.csv", content)])
+    }
+    assert "approved synthetic artifact failed semantic regeneration" in reasons
 
 
 def test_source_cache_and_unapproved_match_rows_are_rejected() -> None:

@@ -4,8 +4,8 @@ The MIT licence applies only to original software and documentation authored by 
 Polanský. It does not grant rights to third-party datasets, services, logos, club marks,
 photographs, or trademarks.
 
-This repository distributes deterministic fixtures for obviously fictional clubs, fictional model
-outputs, and synthetic-only aggregate evidence. It contains no real match row, odds row, manager or
+The current v0.2 tree distributes deterministic fixtures for obviously fictional clubs, fictional
+model outputs, and synthetic-only aggregate evidence. It contains no real match row, odds row, manager or
 referee timeline, club-season tier assignment, source cache, per-fixture real prediction, or real
 fitted model.
 

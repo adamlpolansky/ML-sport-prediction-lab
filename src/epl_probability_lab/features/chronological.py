@@ -10,7 +10,10 @@ from collections import defaultdict
 from collections.abc import Iterable, Mapping
 from dataclasses import dataclass
 from datetime import UTC, datetime
+from math import isfinite
+from types import MappingProxyType
 from typing import Any
+from unicodedata import normalize
 
 MODEL_FEATURE_DENYLIST = frozenset(
     {
@@ -35,7 +38,7 @@ class ChronologicalConfig:
     """Competition assumptions and numerical guards."""
 
     matches_per_team: int = 38
-    promoted_history_threshold: int = 5
+    limited_history_threshold: int = 5
     ratio_epsilon: float = 1.0
 
 
@@ -74,18 +77,25 @@ def _parse_time(value: object) -> datetime:
     return parsed.astimezone(UTC)
 
 
-def _number(row: Mapping[str, Any], name: str) -> float | None:
+def _number(row: Mapping[str, Any], name: str, *, integral: bool = True) -> float | None:
     value = row.get(name)
     if value is None:
         return None
     if isinstance(value, bool) or not isinstance(value, (int, float)):
         raise ValueError(f"{name} must be numeric when supplied")
-    return float(value)
+    result = float(value)
+    if not isfinite(result):
+        raise ValueError(f"{name} must be finite")
+    if result < 0:
+        raise ValueError(f"{name} must be non-negative")
+    if integral and not result.is_integer():
+        raise ValueError(f"{name} must be a whole-number count")
+    return result
 
 
-def _mean(history: list[dict[str, float]], key: str, window: int) -> tuple[float, float]:
+def _mean(history: list[dict[str, float]], key: str, window: int) -> tuple[float, int]:
     values = [item[key] for item in history[-window:] if key in item]
-    return (sum(values) / len(values), 1.0) if values else (0.0, 0.0)
+    return (sum(values) / len(values), len(values)) if values else (0.0, 0)
 
 
 def _points(goals_for: float, goals_against: float) -> float:
@@ -95,17 +105,52 @@ def _points(goals_for: float, goals_against: float) -> float:
 def _rank(table: Mapping[str, dict[str, float]], team: str) -> tuple[float, float, float]:
     if not table or team not in table:
         return 0.0, 0.0, 0.0
-    ordered = sorted(
-        table,
-        key=lambda club: (
-            -table[club]["points"],
-            -(table[club]["gf"] - table[club]["ga"]),
-            -table[club]["gf"],
-            club,
-        ),
-    )
     entry = table[team]
-    return float(ordered.index(team) + 1), entry["points"], entry["gf"] - entry["ga"]
+    sporting_key = (entry["points"], entry["gf"] - entry["ga"], entry["gf"])
+    rank = 1 + sum(
+        (candidate["points"], candidate["gf"] - candidate["ga"], candidate["gf"]) > sporting_key
+        for candidate in table.values()
+    )
+    return float(rank), entry["points"], entry["gf"] - entry["ga"]
+
+
+def _normalized_key(
+    value: object,
+    field: str,
+    registry: dict[tuple[str, str], str],
+) -> str:
+    if not isinstance(value, str):
+        raise ValueError(f"{field} must be a string")
+    key = normalize("NFKC", value).strip()
+    if not key:
+        raise ValueError(f"{field} must be nonempty after normalization")
+    collision_key = (field, key.casefold())
+    previous = registry.setdefault(collision_key, value)
+    if previous != value:
+        raise ValueError(f"{field} normalization collision: {previous!r} and {value!r}")
+    return key
+
+
+def _validate_config(config: ChronologicalConfig) -> None:
+    if (
+        isinstance(config.matches_per_team, bool)
+        or not isinstance(config.matches_per_team, int)
+        or config.matches_per_team <= 0
+    ):
+        raise ValueError("matches_per_team must be a positive integer")
+    if (
+        isinstance(config.limited_history_threshold, bool)
+        or not isinstance(config.limited_history_threshold, int)
+        or config.limited_history_threshold < 0
+    ):
+        raise ValueError("limited_history_threshold must be a non-negative integer")
+    if (
+        isinstance(config.ratio_epsilon, bool)
+        or not isinstance(config.ratio_epsilon, (int, float))
+        or not isfinite(float(config.ratio_epsilon))
+        or config.ratio_epsilon <= 0
+    ):
+        raise ValueError("ratio_epsilon must be finite and positive")
 
 
 def _validate_row(row: Mapping[str, Any]) -> None:
@@ -140,20 +185,22 @@ def _team_features(
     result: dict[str, float] = {}
     for window in _WINDOWS:
         for key in ("points", "goals_for", "goals_against") + _STATS:
-            value, available = _mean(state.matches, key, window)
+            value, count = _mean(state.matches, key, window)
             result[f"{prefix}_{key}_last_{window}"] = value
-            result[f"{prefix}_{key}_last_{window}_available"] = available
-        venue_points, venue_available = _mean(state.venue_matches[venue], "points", window)
+            result[f"{prefix}_{key}_last_{window}_available"] = float(count > 0)
+            result[f"{prefix}_{key}_last_{window}_count"] = float(count)
+        venue_points, venue_count = _mean(state.venue_matches[venue], "points", window)
         result[f"{prefix}_{venue}_points_last_{window}"] = venue_points
-        result[f"{prefix}_{venue}_points_last_{window}_available"] = venue_available
-        goals, goals_available = _mean(state.matches, "goals_for", window)
-        first_half, phase_available = _mean(state.matches, "first_half_goals", window)
+        result[f"{prefix}_{venue}_points_last_{window}_available"] = float(venue_count > 0)
+        result[f"{prefix}_{venue}_points_last_{window}_count"] = float(venue_count)
+        goals, goals_count = _mean(state.matches, "goals_for", window)
+        first_half, phase_count = _mean(state.matches, "first_half_goals", window)
         result[f"{prefix}_first_half_goal_share_last_{window}"] = first_half / (
             goals + config.ratio_epsilon
         )
-        result[f"{prefix}_first_half_goal_share_last_{window}_available"] = min(
-            goals_available, phase_available
-        )
+        share_count = min(goals_count, phase_count)
+        result[f"{prefix}_first_half_goal_share_last_{window}_available"] = float(share_count > 0)
+        result[f"{prefix}_first_half_goal_share_last_{window}_count"] = float(share_count)
     if state.last_played is None:
         result[f"{prefix}_rest_days"] = 0.0
         result[f"{prefix}_rest_days_available"] = 0.0
@@ -166,16 +213,16 @@ def _team_features(
         result[f"{prefix}_rest_days_available"] = 1.0
         result[f"{prefix}_congested_3d"] = float(rest <= 3.0)
     result[f"{prefix}_cold_start"] = float(len(state.matches) == 0)
-    result[f"{prefix}_promoted_or_new"] = float(
-        prior_season_matches < config.promoted_history_threshold
+    result[f"{prefix}_limited_observed_history"] = float(
+        prior_season_matches < config.limited_history_threshold
     )
     return result
 
 
 def _match_record(row: Mapping[str, Any], side: str) -> dict[str, float]:
     other = "away" if side == "home" else "home"
-    goals_for = _number(row, f"{side}_goals")
-    goals_against = _number(row, f"{other}_goals")
+    goals_for = _number(row, f"{side}_goals", integral=True)
+    goals_against = _number(row, f"{other}_goals", integral=True)
     if goals_for is None or goals_against is None:
         raise ValueError("completed rows require home_goals and away_goals")
     record = {
@@ -184,7 +231,7 @@ def _match_record(row: Mapping[str, Any], side: str) -> dict[str, float]:
         "goals_against": goals_against,
     }
     for stat in _STATS:
-        value = _number(row, f"{side}_{stat}")
+        value = _number(row, f"{side}_{stat}", integral=True)
         if value is not None:
             record[stat] = value
     return record
@@ -202,17 +249,25 @@ def build_chronological_features(
     closed instead of imposing an arbitrary within-day order.
     """
 
-    if config.matches_per_team <= 0 or config.ratio_epsilon <= 0:
-        raise ValueError("configuration values must be positive")
+    _validate_config(config)
     prepared: list[tuple[datetime, Mapping[str, Any]]] = []
     fixture_ids: set[str] = set()
+    key_registry: dict[tuple[str, str], str] = {}
     for row in matches:
         _validate_row(row)
-        fixture_id = str(row["fixture_id"])
+        normalized = dict(row)
+        for field in ("fixture_id", "competition", "season", "home_team", "away_team"):
+            registry_field = "team" if field in {"home_team", "away_team"} else field
+            normalized[field] = _normalized_key(row[field], registry_field, key_registry)
+        if normalized["home_team"].casefold() == normalized["away_team"].casefold():
+            raise ValueError("home_team and away_team must differ")
+        fixture_id = normalized["fixture_id"]
         if fixture_id in fixture_ids:
             raise ValueError(f"duplicate fixture_id: {fixture_id}")
         fixture_ids.add(fixture_id)
-        prepared.append((_parse_time(row["event_time"]), row))
+        _match_record(normalized, "home")
+        _match_record(normalized, "away")
+        prepared.append((_parse_time(normalized["event_time"]), normalized))
     prepared.sort(key=lambda item: (item[0].date(), str(item[1]["fixture_id"])))
 
     states: defaultdict[tuple[str, str], _TeamState] = defaultdict(
@@ -295,7 +350,7 @@ def build_chronological_features(
                     season=season,
                     home_team=home,
                     away_team=away,
-                    features=features,
+                    features=MappingProxyType(features),
                 )
             )
         for event_time, row in batch:

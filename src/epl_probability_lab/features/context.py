@@ -6,7 +6,9 @@ from collections import defaultdict
 from collections.abc import Iterable, Mapping
 from dataclasses import dataclass
 from datetime import UTC, datetime
+from types import MappingProxyType
 from typing import Any
+from unicodedata import normalize
 
 
 def _parse_time(value: object, field: str) -> datetime:
@@ -38,6 +40,28 @@ class ManagerContextRow:
     home_team: str
     away_team: str
     features: Mapping[str, float]
+
+
+def _normalized_key(value: object, field: str) -> str:
+    if not isinstance(value, str):
+        raise ValueError(f"{field} must be a string")
+    key = normalize("NFKC", value).strip()
+    if not key:
+        raise ValueError(f"{field} must be nonempty after normalization")
+    return key
+
+
+def _register_key(
+    value: object,
+    field: str,
+    registry: dict[tuple[str, str], str],
+) -> str:
+    key = _normalized_key(value, field)
+    collision_key = (field, key.casefold())
+    previous = registry.setdefault(collision_key, value)  # type: ignore[arg-type]
+    if previous != value:
+        raise ValueError(f"{field} normalization collision")
+    return key
 
 
 def _eligible_spell(
@@ -101,10 +125,42 @@ def build_manager_context(
     """Create prior-only manager features; person identities remain metadata only."""
 
     spell_map: defaultdict[str, list[ManagerSpell]] = defaultdict(list)
+    key_registry: dict[tuple[str, str], str] = {}
     for spell in spells:
-        if not spell.team or not spell.person_key:
-            raise ValueError("manager spells require team and opaque person_key metadata")
-        spell_map[spell.team].append(spell)
+        team = _register_key(spell.team, "team", key_registry)
+        person_key = _register_key(spell.person_key, "person_key", key_registry)
+        if not isinstance(spell.caretaker, bool):
+            raise ValueError("caretaker must be boolean")
+        known = _parse_time(spell.event_known_at, "event_known_at")
+        start = _parse_time(spell.effective_start, "effective_start")
+        end = (
+            _parse_time(spell.effective_end, "effective_end")
+            if spell.effective_end is not None
+            else None
+        )
+        if end is not None and end <= start:
+            raise ValueError(f"manager spell end must follow start for {team}")
+        spell_map[team].append(
+            ManagerSpell(
+                team=team,
+                person_key=person_key,
+                event_known_at=known,
+                effective_start=start,
+                effective_end=end,
+                caretaker=spell.caretaker,
+            )
+        )
+    for team, team_spells in spell_map.items():
+        team_spells.sort(key=lambda item: _parse_time(item.effective_start, "effective_start"))
+        for previous, current in zip(team_spells, team_spells[1:], strict=False):
+            previous_end = (
+                _parse_time(previous.effective_end, "effective_end")
+                if previous.effective_end is not None
+                else None
+            )
+            current_start = _parse_time(current.effective_start, "effective_start")
+            if previous_end is None or previous_end > current_start:
+                raise ValueError(f"overlapping manager spells for {team}")
     rows: list[tuple[datetime, Mapping[str, Any]]] = []
     ids: set[str] = set()
     for row in matches:
@@ -112,11 +168,17 @@ def build_manager_context(
         missing = required - row.keys()
         if missing:
             raise ValueError(f"missing required fields: {', '.join(sorted(missing))}")
-        fixture_id = str(row["fixture_id"])
+        normalized = dict(row)
+        for field in ("fixture_id", "home_team", "away_team"):
+            registry_field = "team" if field in {"home_team", "away_team"} else field
+            normalized[field] = _register_key(row[field], registry_field, key_registry)
+        fixture_id = normalized["fixture_id"]
         if fixture_id in ids:
             raise ValueError(f"duplicate fixture_id: {fixture_id}")
+        if normalized["home_team"].casefold() == normalized["away_team"].casefold():
+            raise ValueError("home_team and away_team must differ")
         ids.add(fixture_id)
-        rows.append((_parse_time(row["event_time"], "event_time"), row))
+        rows.append((_parse_time(normalized["event_time"], "event_time"), normalized))
     rows.sort(key=lambda item: (item[0].date(), str(item[1]["fixture_id"])))
 
     prior_times: defaultdict[str, list[datetime]] = defaultdict(list)
@@ -143,7 +205,7 @@ def build_manager_context(
                     event_time=event_time,
                     home_team=home,
                     away_team=away,
-                    features=features,
+                    features=MappingProxyType(features),
                 )
             )
         for event_time, row in batch:

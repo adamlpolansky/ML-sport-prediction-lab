@@ -8,7 +8,10 @@ that date updates form, table, schedule, statistics, or Elo state.
 Required fixture fields are `fixture_id`, timezone-aware `event_time`, `competition`, `season`,
 `home_team`, `away_team`, `home_goals`, and `away_goals`. Optional numeric statistics are shots,
 shots on target, corners, cards, and first-half goals for both sides. Missing optional history emits
-zero plus an explicit availability flag; it is never silently forward-filled.
+zero plus an explicit availability flag; it is never silently forward-filled. Every rolling mean
+also exposes its observed count, so one available observation cannot be confused with a full
+five-match window. The limited-history feature describes only observed-history coverage and makes
+no claim that a club was promoted or newly created.
 
 The fixed Elo defaults are scale 400, home advantage 60, K 20, base 1500, and no goal-margin term.
 Tier-seeded Elo accepts a complete caller-provided 20-club numeric anchor table for each season,

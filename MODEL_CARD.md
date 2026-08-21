@@ -32,8 +32,8 @@ retained.
 
 ## Limitations
 
-The synthetic schedule is deliberately small and fictional. The primary implementation omits
-referee context and train-only feature selection. Real competitions can have postponements,
+The synthetic schedule is deliberately small and fictional. Referee context is **Not included**,
+and the primary implementation omits train-only feature selection. Real competitions can have postponements,
 ambiguous timestamps, format changes, sparse history, identity changes, and distribution shift.
 Fail-closed validation can therefore reject inputs that lack an adequate point-in-time contract.
 

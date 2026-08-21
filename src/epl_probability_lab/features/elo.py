@@ -5,8 +5,10 @@ from __future__ import annotations
 from collections.abc import Iterable, Mapping
 from dataclasses import dataclass
 from datetime import UTC, datetime
-from math import exp
+from math import exp, fsum, isfinite, log
+from types import MappingProxyType
 from typing import Any
+from unicodedata import normalize
 
 TIER_ELO_IMPLEMENTATION_STATUS = "IMPLEMENTED_AND_SYNTHETICALLY_VERIFIED"
 TIER_ELO_EMPIRICAL_STATUS = "NOT_EVALUATED"
@@ -56,12 +58,14 @@ class EloFeatureRow:
 
     @property
     def features(self) -> Mapping[str, float]:
-        return {
-            "elo_home_rating": self.home_rating,
-            "elo_away_rating": self.away_rating,
-            "elo_rating_difference": self.rating_difference,
-            "elo_expected_home_score": self.expected_home_score,
-        }
+        return MappingProxyType(
+            {
+                "elo_home_rating": self.home_rating,
+                "elo_away_rating": self.away_rating,
+                "elo_rating_difference": self.rating_difference,
+                "elo_expected_home_score": self.expected_home_score,
+            }
+        )
 
 
 @dataclass(frozen=True)
@@ -86,19 +90,97 @@ def _parse_time(value: object) -> datetime:
 def expected_home_score(home: float, away: float, config: EloConfig = DEFAULT_ELO_CONFIG) -> float:
     """Return the standard logistic Elo expectation including home advantage."""
 
-    if config.rating_scale <= 0:
+    _validate_elo_config(config)
+    home_rating = _finite_number(home, "home rating")
+    away_rating = _finite_number(away, "away rating")
+    exponent = (
+        (away_rating - home_rating - float(config.home_advantage))
+        / float(config.rating_scale)
+        * log(10.0)
+    )
+    if exponent >= 0.0:
+        inverse = exp(-exponent)
+        return inverse / (1.0 + inverse)
+    return 1.0 / (1.0 + exp(exponent))
+
+
+def _finite_number(value: object, field: str) -> float:
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        raise ValueError(f"{field} must be numeric")
+    result = float(value)
+    if not isfinite(result):
+        raise ValueError(f"{field} must be finite")
+    return result
+
+
+def _normalized_key(value: object, field: str) -> str:
+    if not isinstance(value, str):
+        raise ValueError(f"{field} must be a string")
+    result = normalize("NFKC", value).strip()
+    if not result:
+        raise ValueError(f"{field} must be nonempty after normalization")
+    return result
+
+
+def _validate_elo_config(config: EloConfig) -> None:
+    scale = _finite_number(config.rating_scale, "rating_scale")
+    _finite_number(config.home_advantage, "home_advantage")
+    k_factor = _finite_number(config.k_factor, "k_factor")
+    _finite_number(config.base_rating, "base_rating")
+    if scale <= 0:
         raise ValueError("rating_scale must be positive")
-    exponent = (away - home - config.home_advantage) / config.rating_scale
-    return 1.0 / (1.0 + exp(exponent * 2.302585092994046))
+    if k_factor <= 0:
+        raise ValueError("k_factor must be positive")
+
+
+def _validate_tier_config(config: TierSeedConfig) -> None:
+    _finite_number(config.base_rating, "tier base_rating")
+    weight = _finite_number(config.continuing_weight, "continuing_weight")
+    if not 0.0 <= weight <= 1.0:
+        raise ValueError("continuing_weight must be between zero and one")
+    if isinstance(config.club_count, bool) or not isinstance(config.club_count, int):
+        raise ValueError("club_count must be an integer")
+    if config.club_count != 20:
+        raise ValueError("public tier Elo requires an exact 20-club table")
+
+
+def _normalized_ratings(values: Mapping[str, float], field: str) -> dict[str, float]:
+    result: dict[str, float] = {}
+    raw_by_folded: dict[str, str] = {}
+    for raw_team, raw_rating in values.items():
+        team = _normalized_key(raw_team, f"{field} team")
+        folded = team.casefold()
+        previous = raw_by_folded.setdefault(folded, raw_team)
+        if previous != raw_team:
+            raise ValueError(f"{field} team normalization collision")
+        result[team] = _finite_number(raw_rating, f"{field} rating for {team}")
+    return result
+
+
+def _normalized_season_tables(
+    values: Mapping[tuple[str, str], Mapping[str, float]] | None,
+    field: str,
+) -> dict[tuple[str, str], dict[str, float]]:
+    result: dict[tuple[str, str], dict[str, float]] = {}
+    raw_by_folded: dict[tuple[str, str], tuple[str, str]] = {}
+    for raw_key, table in (values or {}).items():
+        if not isinstance(raw_key, tuple) or len(raw_key) != 2:
+            raise ValueError(f"{field} keys must be (competition, season) tuples")
+        competition = _normalized_key(raw_key[0], f"{field} competition")
+        season = _normalized_key(raw_key[1], f"{field} season")
+        folded = (competition.casefold(), season.casefold())
+        previous = raw_by_folded.setdefault(folded, raw_key)
+        if previous != raw_key:
+            raise ValueError(f"{field} season normalization collision")
+        result[(competition, season)] = _normalized_ratings(table, field)
+    return result
 
 
 def _actual_score(row: Mapping[str, Any]) -> float:
-    home = row.get("home_goals")
-    away = row.get("away_goals")
-    if isinstance(home, bool) or isinstance(away, bool):
-        raise ValueError("goals must be numeric")
-    if not isinstance(home, (int, float)) or not isinstance(away, (int, float)):
-        raise ValueError("completed rows require numeric goals")
+    home = _finite_number(row.get("home_goals"), "home_goals")
+    away = _finite_number(row.get("away_goals"), "away_goals")
+    if home < 0 or away < 0 or not home.is_integer() or not away.is_integer():
+        raise ValueError("goals must be non-negative whole numbers")
     return 1.0 if home > away else 0.5 if home == away else 0.0
 
 
@@ -115,17 +197,29 @@ def _prepare(matches: Iterable[Mapping[str, Any]]) -> list[tuple[datetime, Mappi
         "home_goals",
         "away_goals",
     }
+    key_registry: dict[tuple[str, str], str] = {}
     for row in matches:
         missing = required - row.keys()
         if missing:
             raise ValueError(f"missing required fields: {', '.join(sorted(missing))}")
-        fixture_id = str(row["fixture_id"])
+        normalized = dict(row)
+        for field in ("fixture_id", "competition", "season", "home_team", "away_team"):
+            raw = row[field]
+            value = _normalized_key(raw, field)
+            registry_field = "team" if field in {"home_team", "away_team"} else field
+            collision_key = (registry_field, value.casefold())
+            previous = key_registry.setdefault(collision_key, raw)
+            if previous != raw:
+                raise ValueError(f"{field} normalization collision")
+            normalized[field] = value
+        fixture_id = normalized["fixture_id"]
         if fixture_id in ids:
             raise ValueError(f"duplicate fixture_id: {fixture_id}")
-        if row["home_team"] == row["away_team"]:
+        if normalized["home_team"].casefold() == normalized["away_team"].casefold():
             raise ValueError("home_team and away_team must differ")
+        _actual_score(normalized)
         ids.add(fixture_id)
-        rows.append((_parse_time(row["event_time"]), row))
+        rows.append((_parse_time(normalized["event_time"]), normalized))
     rows.sort(key=lambda item: (item[0].date(), str(item[1]["fixture_id"])))
     return rows
 
@@ -136,9 +230,9 @@ def _run(
     initial_by_season: Mapping[tuple[str, str], Mapping[str, float]] | None,
     config: EloConfig,
 ) -> EloRun:
-    if config.k_factor <= 0:
-        raise ValueError("k_factor must be positive")
+    _validate_elo_config(config)
     prepared = _prepare(matches)
+    initial_tables = _normalized_season_tables(initial_by_season, "initial")
     ratings: dict[tuple[str, str], float] = {}
     initialized_seasons: set[tuple[str, str]] = set()
     rows: list[EloFeatureRow] = []
@@ -157,8 +251,9 @@ def _run(
             season = str(row["season"])
             season_key = (competition, season)
             if season_key not in initialized_seasons:
-                for team, rating in (initial_by_season or {}).get(season_key, {}).items():
-                    ratings[(competition, str(team))] = float(rating)
+                seeded = initial_tables.get(season_key, {})
+                for team, rating in seeded.items():
+                    ratings[(competition, team)] = rating
                 initialized_seasons.add(season_key)
             home = str(row["home_team"])
             away = str(row["away_team"])
@@ -175,7 +270,6 @@ def _run(
             expected = expected_home_score(home_rating, away_rating, config)
             delta = config.k_factor * (_actual_score(row) - expected)
             pending.extend([((competition, home), delta), ((competition, away), -delta)])
-            update_balance += delta - delta
             rows.append(
                 EloFeatureRow(
                     fixture_id=str(row["fixture_id"]),
@@ -192,8 +286,13 @@ def _run(
             )
         for key, delta in pending:
             ratings[key] += delta
+        update_balance += fsum(delta for _, delta in pending)
         cursor = end
-    return EloRun(rows=tuple(rows), final_ratings=ratings, update_balance=update_balance)
+    return EloRun(
+        rows=tuple(rows),
+        final_ratings=MappingProxyType(dict(ratings)),
+        update_balance=update_balance,
+    )
 
 
 def run_fixed_elo(
@@ -212,16 +311,14 @@ def center_anchors(
 ) -> dict[str, float]:
     """Center a complete caller-provided preseason table on the base rating."""
 
-    if config.club_count != 20:
-        raise ValueError("public tier Elo requires an exact 20-club table")
+    _validate_tier_config(config)
     if len(raw_anchors) != config.club_count:
         raise ValueError(f"tier anchor table must contain exactly {config.club_count} clubs")
-    if len(set(raw_anchors)) != config.club_count:
-        raise ValueError("tier anchor table contains duplicate clubs")
-    mean = sum(float(value) for value in raw_anchors.values()) / config.club_count
-    return {
-        str(team): config.base_rating + float(anchor) - mean for team, anchor in raw_anchors.items()
-    }
+    anchors = _normalized_ratings(raw_anchors, "tier anchor")
+    if len(anchors) != config.club_count:
+        raise ValueError("tier anchor table contains normalized duplicate clubs")
+    mean = fsum(anchors.values()) / config.club_count
+    return {team: float(config.base_rating) + anchor - mean for team, anchor in anchors.items()}
 
 
 def anchors_from_tiers(
@@ -232,10 +329,25 @@ def anchors_from_tiers(
 ) -> dict[str, float]:
     """Resolve generic caller tier labels, then center the complete table."""
 
-    unknown = sorted({tier for tier in tiers.values() if tier not in anchor_scale})
+    _validate_tier_config(config)
+    scale = _normalized_ratings(anchor_scale, "tier scale")
+    resolved: dict[str, float] = {}
+    raw_by_folded: dict[str, str] = {}
+    unknown: set[str] = set()
+    for raw_team, raw_tier in tiers.items():
+        team = _normalized_key(raw_team, "tier team")
+        folded = team.casefold()
+        previous = raw_by_folded.setdefault(folded, raw_team)
+        if previous != raw_team:
+            raise ValueError("tier team normalization collision")
+        tier = _normalized_key(raw_tier, "tier label")
+        if tier not in scale:
+            unknown.add(tier)
+        else:
+            resolved[team] = scale[tier]
     if unknown:
-        raise ValueError(f"unknown tier labels: {', '.join(unknown)}")
-    return center_anchors({team: anchor_scale[tier] for team, tier in tiers.items()}, config)
+        raise ValueError(f"unknown tier labels: {', '.join(sorted(unknown))}")
+    return center_anchors(resolved, config)
 
 
 def tier_season_start(
@@ -246,8 +358,9 @@ def tier_season_start(
 ) -> dict[str, float]:
     """Blend returning clubs with anchors and recenter the provisional table."""
 
+    _validate_tier_config(config)
     centered = center_anchors(centered_anchors, config)
-    previous = previous_end or {}
+    previous = _normalized_ratings(previous_end or {}, "previous end")
     provisional = {
         team: (
             config.continuing_weight * float(previous[team])
@@ -257,7 +370,7 @@ def tier_season_start(
         )
         for team, anchor in centered.items()
     }
-    mean = sum(provisional.values()) / config.club_count
+    mean = fsum(provisional.values()) / config.club_count
     return {team: config.base_rating + value - mean for team, value in provisional.items()}
 
 
@@ -270,7 +383,10 @@ def run_tier_seeded_elo(
 ) -> EloRun:
     """Run Elo from complete, generic caller-supplied season anchor tables."""
 
+    _validate_elo_config(config)
+    _validate_tier_config(tier_config)
     prepared = _prepare(matches)
+    normalized_preseason = _normalized_season_tables(preseason_anchors, "preseason anchor")
     source_rows = [row for _, row in prepared]
     season_order: list[tuple[str, str]] = []
     season_teams: dict[tuple[str, str], set[str]] = {}
@@ -283,7 +399,7 @@ def run_tier_seeded_elo(
     starts: dict[tuple[str, str], Mapping[str, float]] = {}
     previous_by_competition: dict[str, dict[str, float]] = {}
     for season_key in season_order:
-        raw = preseason_anchors.get(season_key)
+        raw = normalized_preseason.get(season_key)
         if raw is None:
             raise ValueError(f"missing tier anchor table for {season_key}")
         if len(raw) != tier_config.club_count or not season_teams[season_key].issubset(raw):

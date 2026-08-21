@@ -3,6 +3,9 @@
 from __future__ import annotations
 
 import argparse
+import csv
+import io
+import json
 import re
 import subprocess
 import tarfile
@@ -138,6 +141,63 @@ def _text_findings(path: str, text: str) -> list[str]:
     return findings
 
 
+def _synthetic_artifact_findings(path: str, text: str) -> list[str]:
+    if path not in _SAFE_DATA:
+        return []
+    try:
+        from .demo import DEFAULT_DEMO_CONFIG
+        from .feature_demo import FICTIONAL_COMPETITION
+        from .model import DISCLAIMER
+        from .synthetic import TEAMS, generate_fixtures
+
+        if path == "demo/synthetic_fixtures.csv":
+            actual = list(csv.DictReader(io.StringIO(text)))
+            expected = generate_fixtures(
+                seed=DEFAULT_DEMO_CONFIG["seed"],
+                row_count=DEFAULT_DEMO_CONFIG["fixture_rows"],
+            )
+            valid = actual == expected
+        else:
+            payload = json.loads(text)
+            if path == "demo/synthetic_model.json":
+                valid = (
+                    payload.get("training_data_kind") == "synthetic"
+                    and payload.get("disclaimer") == DISCLAIMER
+                    and set(payload.get("team_attack", {})) == set(TEAMS)
+                    and set(payload.get("team_defence", {})) == set(TEAMS)
+                )
+            elif path == "demo/prediction_example.json":
+                valid = (
+                    payload.get("fixture_id") == "SYN-EXAMPLE"
+                    and payload.get("home_team") in TEAMS
+                    and payload.get("away_team") in TEAMS
+                    and payload.get("disclaimer") == DISCLAIMER
+                )
+            elif path == "demo/aggregate_report.json":
+                valid = (
+                    payload.get("split") == "chronological synthetic holdout"
+                    and payload.get("disclaimer") == DISCLAIMER
+                )
+            elif path == "demo/evidence.json":
+                valid = (
+                    payload.get("seed") == DEFAULT_DEMO_CONFIG["seed"]
+                    and payload.get("network_requests") == 0
+                    and payload.get("synthetic_fixture_rows") == DEFAULT_DEMO_CONFIG["fixture_rows"]
+                    and payload.get("disclaimer") == DISCLAIMER
+                )
+            else:
+                valid = (
+                    payload.get("artifact") == "public-v0.2-synthetic-feature-evidence"
+                    and payload.get("data_kind") == "synthetic"
+                    and payload.get("competition") == FICTIONAL_COMPETITION
+                    and payload.get("disclaimer")
+                    == "Fictional data only; not empirical EPL evidence."
+                )
+    except (csv.Error, json.JSONDecodeError, TypeError, ValueError):
+        valid = False
+    return [] if valid else ["approved synthetic artifact failed semantic regeneration"]
+
+
 def inspect_paths(items: Iterable[tuple[str, bytes]]) -> list[PublicationViolation]:
     """Inspect normalized paths and their bytes without trusting file extensions."""
 
@@ -154,6 +214,10 @@ def inspect_paths(items: Iterable[tuple[str, bytes]]) -> list[PublicationViolati
             else:
                 violations.extend(
                     PublicationViolation(path, reason) for reason in _text_findings(path, text)
+                )
+                violations.extend(
+                    PublicationViolation(path, reason)
+                    for reason in _synthetic_artifact_findings(path, text)
                 )
     return violations
 

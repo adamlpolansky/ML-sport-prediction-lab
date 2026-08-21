@@ -20,7 +20,7 @@ invariants only and is not evidence of real-world forecasting performance.
 | Chronological feature engine | Implemented and tested | No real rows redistributed |
 | Fixed internal Elo | Implemented and tested | Synthetic invariants only |
 | Manager context | Generic adapter implemented | No public coverage/performance claim |
-| Referee context | Optional retrospective sensitivity | Not primary/promotion evidence |
+| Referee context | Not included | No reliable point-in-time publication timestamps |
 | Tier-seeded Elo | Implemented and synthetic-only | Empirical value not evaluated |
 | Private feature candidate | Not promoted | Dynamic DC incumbent retained |
 
@@ -61,7 +61,9 @@ python -m epl_probability_lab.publication --root .
 ```
 
 The original independent-Poisson synthetic demo remains available through
-`python -m epl_probability_lab.demo`. Both demos run without network access.
+`python -m epl_probability_lab.demo`. Both demos run without network access. Offline execution does
+not by itself promise identical bytes across operating systems or plotting stacks; byte-level
+determinism is claimed only within a supported platform and dependency set.
 
 Read [the feature contract](docs/feature_engine.md),
 [publication scope](docs/publication_scope.md), [model card](MODEL_CARD.md), and

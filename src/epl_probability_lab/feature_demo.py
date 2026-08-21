@@ -178,10 +178,11 @@ def build_evidence() -> dict[str, Any]:
     shuffled_contexts = build_manager_context(shuffled, _manager_spells(matches))
 
     mutated = [dict(row) for row in matches]
-    mutated[-1]["home_goals"] = 9
-    future_invariant = _row_signature(feature_rows) == _row_signature(
-        build_chronological_features(mutated)
-    )
+    mutated[10]["home_goals"] = 9
+    mutated_features = build_chronological_features(mutated)
+    future_invariant = _row_signature(feature_rows[:20]) == _row_signature(
+        mutated_features[:20]
+    ) and _row_signature(feature_rows[20:]) != _row_signature(mutated_features[20:])
     feature_values = [value for row in feature_rows for value in row.features.values()]
     unavailable = sum(
         value == 0.0
