@@ -63,7 +63,13 @@ _FORECAST_DATA = {
     "forecasts/2026-27/matchday-01/forecast.csv",
     "forecasts/2026-27/matchday-01/forecast.json",
 }
-_APPROVED_DATA = _SAFE_DATA | _FORECAST_DATA
+_CHALLENGER_DATA = {
+    "forecasts/2026-27/matchday-01/challengers/elo-poisson-v1/coverage.json",
+    "forecasts/2026-27/matchday-01/challengers/elo-poisson-v1/evaluation_summary.json",
+    "forecasts/2026-27/matchday-01/challengers/elo-poisson-v1/forecast.csv",
+    "forecasts/2026-27/matchday-01/challengers/elo-poisson-v1/forecast.json",
+}
+_APPROVED_DATA = _SAFE_DATA | _FORECAST_DATA | _CHALLENGER_DATA
 _TEXT_SUFFIXES = {
     "",
     ".cff",
@@ -231,6 +237,56 @@ def _forecast_pack_findings(items: Iterable[tuple[str, bytes]]) -> list[Publicat
     return []
 
 
+def _challenger_artifact_findings(path: str, content: bytes) -> list[str]:
+    if path not in _CHALLENGER_DATA:
+        return []
+    from .challenger_release import (
+        ChallengerReleaseError,
+        load_csv_rows,
+        load_json_rows,
+        validate_coverage,
+        validate_evaluation,
+    )
+
+    try:
+        if path.endswith("forecast.csv"):
+            load_csv_rows(content)
+        elif path.endswith("forecast.json"):
+            load_json_rows(content)
+        elif path.endswith("coverage.json"):
+            payload = json.loads(content.decode("utf-8"))
+            included = [
+                {"fixture_key": row["fixture_key"]}
+                for row in payload
+                if isinstance(row, dict) and row.get("included") is True
+            ]
+            validate_coverage(payload, included)
+        else:
+            validate_evaluation(json.loads(content.decode("utf-8")))
+    except (ChallengerReleaseError, UnicodeDecodeError, json.JSONDecodeError, TypeError, KeyError):
+        return ["approved challenger artifact failed semantic validation"]
+    return []
+
+
+def _challenger_pack_findings(
+    items: Iterable[tuple[str, bytes]],
+) -> list[PublicationViolation]:
+    by_path = {_normalized(path): content for path, content in items}
+    if not any(path in by_path for path in _CHALLENGER_DATA):
+        return []
+    from .challenger_release import ChallengerReleaseError, validate_release_contents
+
+    try:
+        validate_release_contents(by_path)
+    except (ChallengerReleaseError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        return [
+            PublicationViolation(
+                "forecasts/2026-27/matchday-01/challengers/elo-poisson-v1", str(exc)
+            )
+        ]
+    return []
+
+
 def inspect_paths(items: Iterable[tuple[str, bytes]]) -> list[PublicationViolation]:
     """Inspect normalized paths and their bytes without trusting file extensions."""
 
@@ -255,6 +311,10 @@ def inspect_paths(items: Iterable[tuple[str, bytes]]) -> list[PublicationViolati
         violations.extend(
             PublicationViolation(path, reason)
             for reason in _forecast_artifact_findings(path, content)
+        )
+        violations.extend(
+            PublicationViolation(path, reason)
+            for reason in _challenger_artifact_findings(path, content)
         )
     return violations
 
@@ -284,10 +344,10 @@ def scan_tree(root: Path, *, require_identity: bool = True) -> list[PublicationV
         else [path.relative_to(root) for path in root.rglob("*")]
     )
     listed_paths = {relative.as_posix() for relative in relatives}
-    for forecast_path in sorted(_FORECAST_DATA):
-        if forecast_path not in listed_paths and (root / forecast_path).is_file():
-            relatives.append(Path(forecast_path))
-            listed_paths.add(forecast_path)
+    for release_path in sorted(_FORECAST_DATA | _CHALLENGER_DATA):
+        if release_path not in listed_paths and (root / release_path).is_file():
+            relatives.append(Path(release_path))
+            listed_paths.add(release_path)
     for relative in sorted(relatives):
         if any(part in _SKIP_PARTS for part in relative.parts):
             continue
@@ -299,6 +359,7 @@ def scan_tree(root: Path, *, require_identity: bool = True) -> list[PublicationV
             items.append((normalized, path.read_bytes()))
     violations.extend(inspect_paths(items))
     violations.extend(_forecast_pack_findings(items))
+    violations.extend(_challenger_pack_findings(items))
     if require_identity:
         required = ("README.md", "LICENSE", "pyproject.toml", "CITATION.cff")
         by_path = {path: content for path, content in items}
@@ -337,6 +398,7 @@ def scan_archive(path: Path) -> list[PublicationViolation]:
         return [PublicationViolation(str(path), "unsupported distribution archive")]
     violations = inspect_paths(items)
     violations.extend(_forecast_pack_findings(items))
+    violations.extend(_challenger_pack_findings(items))
     return violations
 
 

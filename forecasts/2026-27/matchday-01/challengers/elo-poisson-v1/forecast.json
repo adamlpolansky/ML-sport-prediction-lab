@@ -1,0 +1,422 @@
+[
+  {
+    "artifact_status": "prospective_pre_match_challenger",
+    "away_neutral_reentry": true,
+    "away_team": "Coventry City",
+    "competition": "EPL",
+    "fixture_key": "epl-mw01-01",
+    "forecast_id": "epl-2026-27-mw01-elo-poisson-challenger-v1",
+    "generated_at_utc": "2026-08-21T14:01:17Z",
+    "home_neutral_reentry": false,
+    "home_team": "Arsenal",
+    "information_cutoff_utc": "2026-08-21T14:01:16Z",
+    "kickoff_local": "2026-08-21T20:00:00+01:00",
+    "kickoff_utc": "2026-08-21T19:00:00Z",
+    "lambda_away": 0.7393907160414247,
+    "lambda_home": 2.5112573134499336,
+    "matchday": 1,
+    "model_id": "fixed-elo-neutral-reentry-poisson-v1",
+    "p_away": 0.08865344242833215,
+    "p_draw": 0.15189370479015177,
+    "p_home": 0.7594528527815163,
+    "score_max": 9,
+    "season": "2026-27",
+    "tail_mass": 0.00028721617628002516,
+    "timezone": "Europe/London",
+    "top_scorelines": [
+      {
+        "away_goals": 0,
+        "home_goals": 2,
+        "probability": 0.12221898872288205
+      },
+      {
+        "away_goals": 0,
+        "home_goals": 3,
+        "probability": 0.10230777642426417
+      },
+      {
+        "away_goals": 0,
+        "home_goals": 1,
+        "probability": 0.09733689022490423
+      }
+    ]
+  },
+  {
+    "artifact_status": "prospective_pre_match_challenger",
+    "away_neutral_reentry": false,
+    "away_team": "Manchester United",
+    "competition": "EPL",
+    "fixture_key": "epl-mw01-02",
+    "forecast_id": "epl-2026-27-mw01-elo-poisson-challenger-v1",
+    "generated_at_utc": "2026-08-21T14:01:17Z",
+    "home_neutral_reentry": true,
+    "home_team": "Hull City",
+    "information_cutoff_utc": "2026-08-21T14:01:16Z",
+    "kickoff_local": "2026-08-22T12:30:00+01:00",
+    "kickoff_utc": "2026-08-22T11:30:00Z",
+    "lambda_away": 1.679405746346447,
+    "lambda_home": 1.061662211757785,
+    "matchday": 1,
+    "model_id": "fixed-elo-neutral-reentry-poisson-v1",
+    "p_away": 0.5179727884247208,
+    "p_draw": 0.2422290648098087,
+    "p_home": 0.23979814676547065,
+    "score_max": 7,
+    "season": "2026-27",
+    "tail_mass": 0.00037373495544457125,
+    "timezone": "Europe/London",
+    "top_scorelines": [
+      {
+        "away_goals": 1,
+        "home_goals": 1,
+        "probability": 0.11504656256867596
+      },
+      {
+        "away_goals": 1,
+        "home_goals": 0,
+        "probability": 0.10836456388345438
+      },
+      {
+        "away_goals": 2,
+        "home_goals": 1,
+        "probability": 0.09660492913762021
+      }
+    ]
+  },
+  {
+    "artifact_status": "prospective_pre_match_challenger",
+    "away_neutral_reentry": false,
+    "away_team": "Crystal Palace",
+    "competition": "EPL",
+    "fixture_key": "epl-mw01-03",
+    "forecast_id": "epl-2026-27-mw01-elo-poisson-challenger-v1",
+    "generated_at_utc": "2026-08-21T14:01:17Z",
+    "home_neutral_reentry": false,
+    "home_team": "Everton",
+    "information_cutoff_utc": "2026-08-21T14:01:16Z",
+    "kickoff_local": "2026-08-22T15:00:00+01:00",
+    "kickoff_utc": "2026-08-22T14:00:00Z",
+    "lambda_away": 1.2088650470665976,
+    "lambda_home": 1.4990860919538986,
+    "matchday": 1,
+    "model_id": "fixed-elo-neutral-reentry-poisson-v1",
+    "p_away": 0.306164328565195,
+    "p_draw": 0.25465612071865495,
+    "p_home": 0.4391795507161499,
+    "score_max": 7,
+    "season": "2026-27",
+    "tail_mass": 0.00020778731392423477,
+    "timezone": "Europe/London",
+    "top_scorelines": [
+      {
+        "away_goals": 1,
+        "home_goals": 1,
+        "probability": 0.12084993158853818
+      },
+      {
+        "away_goals": 0,
+        "home_goals": 1,
+        "probability": 0.09996974590487968
+      },
+      {
+        "away_goals": 1,
+        "home_goals": 2,
+        "probability": 0.09058222582897885
+      }
+    ]
+  },
+  {
+    "artifact_status": "prospective_pre_match_challenger",
+    "away_neutral_reentry": false,
+    "away_team": "Sunderland",
+    "competition": "EPL",
+    "fixture_key": "epl-mw01-04",
+    "forecast_id": "epl-2026-27-mw01-elo-poisson-challenger-v1",
+    "generated_at_utc": "2026-08-21T14:01:17Z",
+    "home_neutral_reentry": true,
+    "home_team": "Ipswich Town",
+    "information_cutoff_utc": "2026-08-21T14:01:16Z",
+    "kickoff_local": "2026-08-22T15:00:00+01:00",
+    "kickoff_utc": "2026-08-22T14:00:00Z",
+    "lambda_away": 1.4073179608542774,
+    "lambda_home": 1.2780469559164522,
+    "matchday": 1,
+    "model_id": "fixed-elo-neutral-reentry-poisson-v1",
+    "p_away": 0.40061389525824864,
+    "p_draw": 0.258408179772663,
+    "p_home": 0.3409779249690884,
+    "score_max": 7,
+    "season": "2026-27",
+    "tail_mass": 0.00016754624994741452,
+    "timezone": "Europe/London",
+    "top_scorelines": [
+      {
+        "away_goals": 1,
+        "home_goals": 1,
+        "probability": 0.1226796832190994
+      },
+      {
+        "away_goals": 1,
+        "home_goals": 0,
+        "probability": 0.09598996551040583
+      },
+      {
+        "away_goals": 0,
+        "home_goals": 1,
+        "probability": 0.08717268352393497
+      }
+    ]
+  },
+  {
+    "artifact_status": "prospective_pre_match_challenger",
+    "away_neutral_reentry": false,
+    "away_team": "Leeds United",
+    "competition": "EPL",
+    "fixture_key": "epl-mw01-05",
+    "forecast_id": "epl-2026-27-mw01-elo-poisson-challenger-v1",
+    "generated_at_utc": "2026-08-21T14:01:17Z",
+    "home_neutral_reentry": false,
+    "home_team": "Nottingham Forest",
+    "information_cutoff_utc": "2026-08-21T14:01:16Z",
+    "kickoff_local": "2026-08-22T15:00:00+01:00",
+    "kickoff_utc": "2026-08-22T14:00:00Z",
+    "lambda_away": 1.1722571509002053,
+    "lambda_home": 1.5482535940890012,
+    "matchday": 1,
+    "model_id": "fixed-elo-neutral-reentry-poisson-v1",
+    "p_away": 0.2882705882882878,
+    "p_draw": 0.25189051288067277,
+    "p_home": 0.4598388988310393,
+    "score_max": 7,
+    "season": "2026-27",
+    "tail_mass": 0.00024086074731144436,
+    "timezone": "Europe/London",
+    "top_scorelines": [
+      {
+        "away_goals": 1,
+        "home_goals": 1,
+        "probability": 0.11952721488803086
+      },
+      {
+        "away_goals": 0,
+        "home_goals": 1,
+        "probability": 0.10196330625600616
+      },
+      {
+        "away_goals": 1,
+        "home_goals": 2,
+        "probability": 0.09252922002092107
+      }
+    ]
+  },
+  {
+    "artifact_status": "prospective_pre_match_challenger",
+    "away_neutral_reentry": false,
+    "away_team": "Tottenham Hotspur",
+    "competition": "EPL",
+    "fixture_key": "epl-mw01-06",
+    "forecast_id": "epl-2026-27-mw01-elo-poisson-challenger-v1",
+    "generated_at_utc": "2026-08-21T14:01:17Z",
+    "home_neutral_reentry": false,
+    "home_team": "Brentford",
+    "information_cutoff_utc": "2026-08-21T14:01:16Z",
+    "kickoff_local": "2026-08-22T17:30:00+01:00",
+    "kickoff_utc": "2026-08-22T16:30:00Z",
+    "lambda_away": 1.0698879789025786,
+    "lambda_home": 1.7040787027972926,
+    "matchday": 1,
+    "model_id": "fixed-elo-neutral-reentry-poisson-v1",
+    "p_away": 0.23808876759819117,
+    "p_draw": 0.23996493522946488,
+    "p_home": 0.5219462971723438,
+    "score_max": 7,
+    "season": "2026-27",
+    "tail_mass": 0.0004103804189594662,
+    "timezone": "Europe/London",
+    "top_scorelines": [
+      {
+        "away_goals": 1,
+        "home_goals": 1,
+        "probability": 0.11383814134444005
+      },
+      {
+        "away_goals": 0,
+        "home_goals": 1,
+        "probability": 0.10640192579900543
+      },
+      {
+        "away_goals": 1,
+        "home_goals": 2,
+        "probability": 0.09699457611554413
+      }
+    ]
+  },
+  {
+    "artifact_status": "prospective_pre_match_challenger",
+    "away_neutral_reentry": false,
+    "away_team": "Aston Villa",
+    "competition": "EPL",
+    "fixture_key": "epl-mw01-07",
+    "forecast_id": "epl-2026-27-mw01-elo-poisson-challenger-v1",
+    "generated_at_utc": "2026-08-21T14:01:17Z",
+    "home_neutral_reentry": false,
+    "home_team": "Brighton & Hove Albion",
+    "information_cutoff_utc": "2026-08-21T14:01:16Z",
+    "kickoff_local": "2026-08-23T14:00:00+01:00",
+    "kickoff_utc": "2026-08-23T13:00:00Z",
+    "lambda_away": 1.3219513121751512,
+    "lambda_home": 1.3647963728104053,
+    "matchday": 1,
+    "model_id": "fixed-elo-neutral-reentry-poisson-v1",
+    "p_away": 0.36059046660225125,
+    "p_draw": 0.2591034047231361,
+    "p_home": 0.3803061286746128,
+    "score_max": 6,
+    "season": "2026-27",
+    "tail_mass": 0.0009817051924450038,
+    "timezone": "Europe/London",
+    "top_scorelines": [
+      {
+        "away_goals": 1,
+        "home_goals": 1,
+        "probability": 0.12299010848218754
+      },
+      {
+        "away_goals": 0,
+        "home_goals": 1,
+        "probability": 0.09303679140786089
+      },
+      {
+        "away_goals": 1,
+        "home_goals": 0,
+        "probability": 0.09011608686277851
+      }
+    ]
+  },
+  {
+    "artifact_status": "prospective_pre_match_challenger",
+    "away_neutral_reentry": false,
+    "away_team": "AFC Bournemouth",
+    "competition": "EPL",
+    "fixture_key": "epl-mw01-08",
+    "forecast_id": "epl-2026-27-mw01-elo-poisson-challenger-v1",
+    "generated_at_utc": "2026-08-21T14:01:17Z",
+    "home_neutral_reentry": false,
+    "home_team": "Manchester City",
+    "information_cutoff_utc": "2026-08-21T14:01:16Z",
+    "kickoff_local": "2026-08-23T14:00:00+01:00",
+    "kickoff_utc": "2026-08-23T13:00:00Z",
+    "lambda_away": 0.9995335231075569,
+    "lambda_home": 1.8301716075398056,
+    "matchday": 1,
+    "model_id": "fixed-elo-neutral-reentry-poisson-v1",
+    "p_away": 0.20393276095434643,
+    "p_draw": 0.22781867998446675,
+    "p_home": 0.568248559061187,
+    "score_max": 7,
+    "season": "2026-27",
+    "tail_mass": 0.0006350158916386128,
+    "timezone": "Europe/London",
+    "top_scorelines": [
+      {
+        "away_goals": 0,
+        "home_goals": 1,
+        "probability": 0.10810414878010224
+      },
+      {
+        "away_goals": 1,
+        "home_goals": 1,
+        "probability": 0.10805372069271911
+      },
+      {
+        "away_goals": 0,
+        "home_goals": 2,
+        "probability": 0.09892457187730103
+      }
+    ]
+  },
+  {
+    "artifact_status": "prospective_pre_match_challenger",
+    "away_neutral_reentry": false,
+    "away_team": "Liverpool",
+    "competition": "EPL",
+    "fixture_key": "epl-mw01-09",
+    "forecast_id": "epl-2026-27-mw01-elo-poisson-challenger-v1",
+    "generated_at_utc": "2026-08-21T14:01:17Z",
+    "home_neutral_reentry": false,
+    "home_team": "Newcastle United",
+    "information_cutoff_utc": "2026-08-21T14:01:16Z",
+    "kickoff_local": "2026-08-23T16:30:00+01:00",
+    "kickoff_utc": "2026-08-23T15:30:00Z",
+    "lambda_away": 1.3922225786199407,
+    "lambda_home": 1.2925937053802568,
+    "matchday": 1,
+    "model_id": "fixed-elo-neutral-reentry-poisson-v1",
+    "p_away": 0.39346827674277973,
+    "p_draw": 0.25890842941672376,
+    "p_home": 0.3476232938404967,
+    "score_max": 6,
+    "season": "2026-27",
+    "tail_mass": 0.0009925048731004305,
+    "timezone": "Europe/London",
+    "top_scorelines": [
+      {
+        "away_goals": 1,
+        "home_goals": 1,
+        "probability": 0.12291391894341783
+      },
+      {
+        "away_goals": 1,
+        "home_goals": 0,
+        "probability": 0.09509091560000972
+      },
+      {
+        "away_goals": 0,
+        "home_goals": 1,
+        "probability": 0.08828611231492733
+      }
+    ]
+  },
+  {
+    "artifact_status": "prospective_pre_match_challenger",
+    "away_neutral_reentry": false,
+    "away_team": "Chelsea",
+    "competition": "EPL",
+    "fixture_key": "epl-mw01-10",
+    "forecast_id": "epl-2026-27-mw01-elo-poisson-challenger-v1",
+    "generated_at_utc": "2026-08-21T14:01:17Z",
+    "home_neutral_reentry": false,
+    "home_team": "Fulham",
+    "information_cutoff_utc": "2026-08-21T14:01:16Z",
+    "kickoff_local": "2026-08-24T20:00:00+01:00",
+    "kickoff_utc": "2026-08-24T19:00:00Z",
+    "lambda_away": 1.2665675623146737,
+    "lambda_home": 1.4274942120115701,
+    "matchday": 1,
+    "model_id": "fixed-elo-neutral-reentry-poisson-v1",
+    "p_away": 0.3341567514344581,
+    "p_draw": 0.25758179180099827,
+    "p_home": 0.4082614567645436,
+    "score_max": 7,
+    "season": "2026-27",
+    "tail_mass": 0.00017525450197630743,
+    "timezone": "Europe/London",
+    "top_scorelines": [
+      {
+        "away_goals": 1,
+        "home_goals": 1,
+        "probability": 0.12225388624184745
+      },
+      {
+        "away_goals": 0,
+        "home_goals": 1,
+        "probability": 0.09652377802762167
+      },
+      {
+        "away_goals": 1,
+        "home_goals": 2,
+        "probability": 0.08725835750307907
+      }
+    ]
+  }
+]

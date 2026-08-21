@@ -1,0 +1,82 @@
+[
+  {
+    "away_team": "Coventry City",
+    "fixture_key": "epl-mw01-01",
+    "home_team": "Arsenal",
+    "included": true,
+    "kickoff_utc": "2026-08-21T19:00:00Z",
+    "reason": null
+  },
+  {
+    "away_team": "Manchester United",
+    "fixture_key": "epl-mw01-02",
+    "home_team": "Hull City",
+    "included": true,
+    "kickoff_utc": "2026-08-22T11:30:00Z",
+    "reason": null
+  },
+  {
+    "away_team": "Crystal Palace",
+    "fixture_key": "epl-mw01-03",
+    "home_team": "Everton",
+    "included": true,
+    "kickoff_utc": "2026-08-22T14:00:00Z",
+    "reason": null
+  },
+  {
+    "away_team": "Sunderland",
+    "fixture_key": "epl-mw01-04",
+    "home_team": "Ipswich Town",
+    "included": true,
+    "kickoff_utc": "2026-08-22T14:00:00Z",
+    "reason": null
+  },
+  {
+    "away_team": "Leeds United",
+    "fixture_key": "epl-mw01-05",
+    "home_team": "Nottingham Forest",
+    "included": true,
+    "kickoff_utc": "2026-08-22T14:00:00Z",
+    "reason": null
+  },
+  {
+    "away_team": "Tottenham Hotspur",
+    "fixture_key": "epl-mw01-06",
+    "home_team": "Brentford",
+    "included": true,
+    "kickoff_utc": "2026-08-22T16:30:00Z",
+    "reason": null
+  },
+  {
+    "away_team": "Aston Villa",
+    "fixture_key": "epl-mw01-07",
+    "home_team": "Brighton & Hove Albion",
+    "included": true,
+    "kickoff_utc": "2026-08-23T13:00:00Z",
+    "reason": null
+  },
+  {
+    "away_team": "AFC Bournemouth",
+    "fixture_key": "epl-mw01-08",
+    "home_team": "Manchester City",
+    "included": true,
+    "kickoff_utc": "2026-08-23T13:00:00Z",
+    "reason": null
+  },
+  {
+    "away_team": "Liverpool",
+    "fixture_key": "epl-mw01-09",
+    "home_team": "Newcastle United",
+    "included": true,
+    "kickoff_utc": "2026-08-23T15:30:00Z",
+    "reason": null
+  },
+  {
+    "away_team": "Chelsea",
+    "fixture_key": "epl-mw01-10",
+    "home_team": "Fulham",
+    "included": true,
+    "kickoff_utc": "2026-08-24T19:00:00Z",
+    "reason": null
+  }
+]
