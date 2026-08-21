@@ -17,7 +17,7 @@ immutable Dynamic Dixon–Coles v1 release.
 ## Frozen research commitments
 
 - Model ID: `fixed-elo-neutral-reentry-poisson-v1`
-- Private source-code commit: `43c4be27754787418aaa4539be0e37647eb1e8ae`
+- Private source-code commit: `89c4c6c5fad01976bcba1d19da43a3671165b4fb`
 - Base protocol SHA-256: `b7e5365f8b0af44b62c0d236ee222375638a5587abb284dd9d47a3814332e9ad`
 - Protocol amendment SHA-256: `aa0f1883a1eddb05d296ab96b5e318884708e10dda69f9327f836c14a549da74`
 - Effective protocol SHA-256: `2d8fa02cf6b5e456a983c085761419536d8f832e1864bdf0cd52c346957cac12`
@@ -25,7 +25,7 @@ immutable Dynamic Dixon–Coles v1 release.
 - Canonical development rows SHA-256: `648fa0ce99b222325cf6ca1bb82defb568ec008e735831b73b253f74669de84c`
 - Descriptive 2025/26 stress rows SHA-256: `a6ca706f2e2ec5d8b4949f812af1dac581d2fb6f2607dd69541a8883bdf22e28`
 - Incumbent paired OOS evidence SHA-256: `a103633895b0b1716e80a41551366e375f8e2142b40489d1e03c7f1c8c8f0ad0`
-- Private fitted artifact SHA-256: `2988fad1be3bd6d5b97aa03155f9e91dd62fa9b717cbbc91ae2bd85a0b6ceaca`
+- Private fitted artifact SHA-256: `e49904f5c4816ed029585dd10c6028447baf9a077380c1bcddb6c5f213f60b7d`
 
 The amendment binds the frozen model to the canonical v0.3 EPL row ledger after an initial run
 failed closed on mismatched match identities. It records that failed run and changes no Elo,

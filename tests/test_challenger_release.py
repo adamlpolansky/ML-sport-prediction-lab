@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import shutil
 from pathlib import Path
@@ -40,6 +41,15 @@ def test_committed_challenger_pack_is_exact_and_cross_format_consistent() -> Non
     assert {row["artifact_status"] for row in rows} == {"prospective_pre_match_challenger"}
     assert {row["information_cutoff_utc"] for row in rows} == {"2026-08-21T14:01:16Z"}
     assert {row["generated_at_utc"] for row in rows} == {"2026-08-21T14:01:17Z"}
+    expected = {
+        JSON_PATH: "7cfff5b6821d508be069e96546fed0276b1efd898a0cecfd5682132ceec7532e",
+        CSV_PATH: "cfaba9ec9c31115f5ce5d17ed96ddeebc38aaa363656988e9a8e3ab2cebfeacb",
+        COVERAGE_PATH: "c09ed1fe6436717eb87b9dba4e11cab9774e12ab36bcf85f5783103ef4413ca8",
+        EVALUATION_PATH: "da81f7d361e9d1b388a220562d0e8d6c986388b224efa8c792e1addcab54bc41",
+    }
+    assert {
+        path: hashlib.sha256((ROOT / path).read_bytes()).hexdigest() for path in expected
+    } == expected
 
 
 @pytest.mark.parametrize(

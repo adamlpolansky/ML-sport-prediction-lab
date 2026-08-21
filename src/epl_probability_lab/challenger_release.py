@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import io
 import json
 import math
@@ -94,15 +95,21 @@ COVERAGE_FIELDS = tuple(
 )
 TABLE_START = "<!-- challenger-table:start -->"
 TABLE_END = "<!-- challenger-table:end -->"
-PRIVATE_ARTIFACT_SHA256 = "2988fad1be3bd6d5b97aa03155f9e91dd62fa9b717cbbc91ae2bd85a0b6ceaca"
+PRIVATE_ARTIFACT_SHA256 = "e49904f5c4816ed029585dd10c6028447baf9a077380c1bcddb6c5f213f60b7d"
 EFFECTIVE_PROTOCOL_SHA256 = "2d8fa02cf6b5e456a983c085761419536d8f832e1864bdf0cd52c346957cac12"
-PRIVATE_CODE_COMMIT = "43c4be27754787418aaa4539be0e37647eb1e8ae"
+PRIVATE_CODE_COMMIT = "89c4c6c5fad01976bcba1d19da43a3671165b4fb"
 SOURCE_SHA256 = "fa11cf7d253feb60ba163945c75088bcd6da35a34f82e12dcaab4618651c12f6"
 INCUMBENT_OOS_SHA256 = "a103633895b0b1716e80a41551366e375f8e2142b40489d1e03c7f1c8c8f0ad0"
 PROTOCOL_HASHES = {
     "base_protocol_sha256": "b7e5365f8b0af44b62c0d236ee222375638a5587abb284dd9d47a3814332e9ad",
     "amendment_sha256": "aa0f1883a1eddb05d296ab96b5e318884708e10dda69f9327f836c14a549da74",
     "effective_protocol_sha256": EFFECTIVE_PROTOCOL_SHA256,
+}
+PUBLIC_ARTIFACT_SHA256 = {
+    JSON_PATH: "7cfff5b6821d508be069e96546fed0276b1efd898a0cecfd5682132ceec7532e",
+    CSV_PATH: "cfaba9ec9c31115f5ce5d17ed96ddeebc38aaa363656988e9a8e3ab2cebfeacb",
+    COVERAGE_PATH: "c09ed1fe6436717eb87b9dba4e11cab9774e12ab36bcf85f5783103ef4413ca8",
+    EVALUATION_PATH: "da81f7d361e9d1b388a220562d0e8d6c986388b224efa8c792e1addcab54bc41",
 }
 
 
@@ -492,6 +499,9 @@ def validate_release_contents(items: Mapping[str, bytes]) -> list[dict[str, Any]
     missing = [path.as_posix() for path in required if path.as_posix() not in items]
     if missing:
         raise ChallengerReleaseError(f"challenger release files are missing: {', '.join(missing)}")
+    for path, expected in PUBLIC_ARTIFACT_SHA256.items():
+        if hashlib.sha256(items[path.as_posix()]).hexdigest() != expected:
+            raise ChallengerReleaseError(f"immutable {path.as_posix()} bytes changed")
     json_rows = load_json_rows(items[JSON_PATH.as_posix()])
     csv_rows = load_csv_rows(items[CSV_PATH.as_posix()])
     if json_rows != csv_rows:
