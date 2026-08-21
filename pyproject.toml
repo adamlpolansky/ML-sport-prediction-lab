@@ -25,7 +25,8 @@ epl-publication-check = "epl_probability_lab.publication:main"
 where = ["src"]
 
 [tool.pytest.ini_options]
-addopts = "--strict-markers --basetemp=.qa/pytest -o cache_dir=.qa/pytest-cache"
+addopts = "--strict-markers"
+cache_dir = ".qa/pytest-cache"
 testpaths = ["tests"]
 
 [tool.ruff]

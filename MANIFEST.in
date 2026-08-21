@@ -1,0 +1,6 @@
+include CITATION.cff
+include DATA_RIGHTS.md
+include MODEL_CARD.md
+include configs/synthetic_demo.json
+recursive-include demo *.csv *.json *.md *.png
+recursive-include docs *.md
