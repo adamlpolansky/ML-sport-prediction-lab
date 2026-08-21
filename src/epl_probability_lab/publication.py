@@ -59,6 +59,11 @@ _SAFE_DATA = {
     "demo/synthetic_fixtures.csv",
     "demo/synthetic_model.json",
 }
+_FORECAST_DATA = {
+    "forecasts/2026-27/matchday-01/forecast.csv",
+    "forecasts/2026-27/matchday-01/forecast.json",
+}
+_APPROVED_DATA = _SAFE_DATA | _FORECAST_DATA
 _TEXT_SUFFIXES = {
     "",
     ".cff",
@@ -93,7 +98,7 @@ def _path_findings(path: str) -> list[str]:
         findings.append(f"forbidden artifact suffix {suffix}")
     if any(part in lowered for part in _FORBIDDEN_PARTS):
         findings.append("forbidden cache, source-data, credential, or private-artifact path")
-    if suffix in {".csv", ".tsv", ".parquet", ".xlsx"} and path not in _SAFE_DATA:
+    if suffix in {".csv", ".tsv", ".parquet", ".xlsx"} and path not in _APPROVED_DATA:
         findings.append("data file is not an explicitly approved synthetic artifact")
     return findings
 
@@ -133,7 +138,7 @@ def _text_findings(path: str, text: str) -> list[str]:
         )
         if any(field in lowered for field in real_row_fields):
             findings.append("real-person, competition-source, or provider row signature")
-        if path not in _SAFE_DATA and any(
+        if path not in _APPROVED_DATA and any(
             field in lowered
             for field in ("home_team", "away_team", "home_goals", "probabilities", "outcome")
         ):
@@ -198,6 +203,34 @@ def _synthetic_artifact_findings(path: str, text: str) -> list[str]:
     return [] if valid else ["approved synthetic artifact failed semantic regeneration"]
 
 
+def _forecast_artifact_findings(path: str, content: bytes) -> list[str]:
+    if path not in _FORECAST_DATA:
+        return []
+    from .forecast_release import ForecastReleaseError, load_csv_rows, load_json_rows
+
+    try:
+        if path.endswith(".csv"):
+            load_csv_rows(content)
+        else:
+            load_json_rows(content)
+    except ForecastReleaseError:
+        return ["approved forecast artifact failed semantic validation"]
+    return []
+
+
+def _forecast_pack_findings(items: Iterable[tuple[str, bytes]]) -> list[PublicationViolation]:
+    by_path = {_normalized(path): content for path, content in items}
+    if not any(path in by_path for path in _FORECAST_DATA):
+        return []
+    from .forecast_release import ForecastReleaseError, validate_release_contents
+
+    try:
+        validate_release_contents(by_path)
+    except ForecastReleaseError as exc:
+        return [PublicationViolation("forecasts/2026-27/matchday-01", str(exc))]
+    return []
+
+
 def inspect_paths(items: Iterable[tuple[str, bytes]]) -> list[PublicationViolation]:
     """Inspect normalized paths and their bytes without trusting file extensions."""
 
@@ -219,6 +252,10 @@ def inspect_paths(items: Iterable[tuple[str, bytes]]) -> list[PublicationViolati
                     PublicationViolation(path, reason)
                     for reason in _synthetic_artifact_findings(path, text)
                 )
+        violations.extend(
+            PublicationViolation(path, reason)
+            for reason in _forecast_artifact_findings(path, content)
+        )
     return violations
 
 
@@ -246,6 +283,11 @@ def scan_tree(root: Path, *, require_identity: bool = True) -> list[PublicationV
         if listed.returncode == 0
         else [path.relative_to(root) for path in root.rglob("*")]
     )
+    listed_paths = {relative.as_posix() for relative in relatives}
+    for forecast_path in sorted(_FORECAST_DATA):
+        if forecast_path not in listed_paths and (root / forecast_path).is_file():
+            relatives.append(Path(forecast_path))
+            listed_paths.add(forecast_path)
     for relative in sorted(relatives):
         if any(part in _SKIP_PARTS for part in relative.parts):
             continue
@@ -256,6 +298,7 @@ def scan_tree(root: Path, *, require_identity: bool = True) -> list[PublicationV
         elif path.is_file():
             items.append((normalized, path.read_bytes()))
     violations.extend(inspect_paths(items))
+    violations.extend(_forecast_pack_findings(items))
     if require_identity:
         required = ("README.md", "LICENSE", "pyproject.toml", "CITATION.cff")
         by_path = {path: content for path, content in items}
@@ -292,7 +335,9 @@ def scan_archive(path: Path) -> list[PublicationViolation]:
                         items.append((_archive_member_path(member.name), handle.read()))
     else:
         return [PublicationViolation(str(path), "unsupported distribution archive")]
-    return inspect_paths(items)
+    violations = inspect_paths(items)
+    violations.extend(_forecast_pack_findings(items))
+    return violations
 
 
 def _archive_member_path(path: str) -> str:
