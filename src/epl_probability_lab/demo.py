@@ -12,6 +12,15 @@ from .evaluation import evaluate, plot_reliability
 from .model import DISCLAIMER, SyntheticPoissonModel
 from .synthetic import generate_fixtures, write_fixtures
 
+DEFAULT_DEMO_CONFIG = {
+    "code_version": "0.1.0",
+    "evaluation_rows": 32,
+    "fixture_rows": 96,
+    "max_goals": 10,
+    "seed": 20260805,
+    "training_rows": 64,
+}
+
 
 def _json_bytes(value: Any) -> bytes:
     return (json.dumps(value, indent=2, sort_keys=True, ensure_ascii=False) + "\n").encode()
@@ -27,20 +36,17 @@ def _sha256(path: Path) -> str:
 
 def _code_sha256(package_dir: Path) -> str:
     digest = hashlib.sha256()
-    for path in sorted(package_dir.glob("*.py")):
-        digest.update(path.name.encode())
+    for path in sorted(package_dir.rglob("*.py")):
+        digest.update(path.relative_to(package_dir).as_posix().encode())
         digest.update(path.read_bytes())
     return digest.hexdigest()
 
 
-def _project_root() -> Path:
-    return Path(__file__).resolve().parents[2]
-
-
 def run_demo(output_dir: Path, config_path: Path | None = None) -> dict[str, Any]:
-    project_root = _project_root()
-    config_path = config_path or project_root / "configs" / "synthetic_demo.json"
-    config = json.loads(config_path.read_text(encoding="utf-8"))
+    if config_path is None:
+        config = dict(DEFAULT_DEMO_CONFIG)
+    else:
+        config = json.loads(config_path.read_text(encoding="utf-8"))
     output_dir.mkdir(parents=True, exist_ok=True)
 
     rows = generate_fixtures(seed=config["seed"], row_count=config["fixture_rows"])
@@ -97,13 +103,13 @@ def run_demo(output_dir: Path, config_path: Path | None = None) -> dict[str, Any
         plot_path,
     )
     evidence = {
-        "code_sha256": _code_sha256(project_root / "src" / "epl_probability_lab"),
+        "code_sha256": _code_sha256(Path(__file__).resolve().parent),
         "code_version": config["code_version"],
-        "config_sha256": _sha256(config_path),
+        "config_sha256": hashlib.sha256(_json_bytes(config)).hexdigest(),
         "disclaimer": DISCLAIMER,
         "evaluation_rows": len(holdout),
         "generated_sha256": {path.name: _sha256(path) for path in generated_paths},
-        "provider_requests": 0,
+        "network_requests": 0,
         "seed": config["seed"],
         "synthetic_fixture_rows": len(rows),
         "training_rows": len(training),
@@ -120,7 +126,7 @@ def main() -> None:
     evidence = run_demo(args.output_dir, args.config)
     print(
         f"Synthetic demo complete: {evidence['synthetic_fixture_rows']} fixtures, "
-        "provider requests: 0"
+        "network requests: 0"
     )
 
 

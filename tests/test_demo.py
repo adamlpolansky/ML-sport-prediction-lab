@@ -12,7 +12,7 @@ from epl_probability_lab.model import DISCLAIMER
 
 def test_demo_emits_public_safe_evidence(tmp_path: Path) -> None:
     evidence = run_demo(tmp_path)
-    assert evidence["provider_requests"] == 0
+    assert evidence["network_requests"] == 0
     assert evidence["synthetic_fixture_rows"] == 96
     assert evidence["training_rows"] == 64
     assert evidence["evaluation_rows"] == 32

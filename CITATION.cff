@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "EPL Probability Forecasting Lab"
+abstract: "Software and synthetic evidence authored by Adam Luboš Polanský."
+version: 0.2.0
+date-released: 2026-08-21
+type: software
+authors:
+  - family-names: "Polanský"
+    given-names: "Adam Luboš"
+repository-code: "https://github.com/adamlpolansky/ML-sport-prediction-lab"
+license: MIT
