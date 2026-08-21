@@ -1,26 +1,17 @@
 # Data rights and local-use contract
 
-The MIT licence in this project applies to original software and documentation authored by Adam
-Polanský. It does **not** license third-party provider data, API services, logos, club badges,
+The MIT licence applies only to original software and documentation authored by Adam Luboš
+Polanský. It does not grant rights to third-party datasets, services, logos, club marks,
 photographs, or trademarks.
 
-## What this project distributes
+The current v0.2 tree distributes deterministic fixtures for obviously fictional clubs, fictional
+model outputs, and synthetic-only aggregate evidence. It contains no real match row, odds row, manager or
+referee timeline, club-season tier assignment, source cache, per-fixture real prediction, or real
+fitted model.
 
-- Deterministically generated fixtures for fictional teams.
-- A model artifact fitted only on those synthetic fixtures.
-- Synthetic predictions, aggregate demo metrics, and a synthetic reliability plot.
-- A compact set of non-reconstructive metrics from a private historical evaluation.
+Anyone adapting the software to external data must obtain that data independently, comply with the
+applicable terms and licences, provide required attribution, and keep non-redistributable inputs and
+derived artifacts outside version control.
 
-No third-party match-level dataset is distributed. No real football-data.org response, wrapper, or
-snapshot is distributed. The public project contains no provider-derived team mapping, membership
-registry, real fitted team parameter, live snapshot, prospective ledger, or acceptance record.
-
-## Optional provider use
-
-Provider adapters are optional local interfaces and are not needed for the offline demo. Users must
-obtain their own credentials, comply with the provider's current terms, and keep downloaded data,
-tokens, terms records, mappings, and generated private artifacts local and ignored. When the
-football-data.org service is used, its required attribution must be displayed.
-
-The empty `FOOTBALL_DATA_ORG_TOKEN` variable in `.env.example` is documentation only. The public
-clone reproduces the synthetic demo; it does not reproduce the private historical evaluation.
+See [docs/data_provenance_and_licenses.md](docs/data_provenance_and_licenses.md) for the release
+boundary.

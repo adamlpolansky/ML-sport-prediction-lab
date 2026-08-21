@@ -1,3 +1,3 @@
-"""Synthetic-first football probability forecasting demonstration."""
+"""Leakage-safe football probability forecasting research components."""
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"

@@ -4,25 +4,29 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "epl-probability-forecasting-lab"
-version = "0.1.0"
-description = "A deterministic synthetic-first football probability forecasting demonstration"
+version = "0.2.0"
+description = "Leakage-safe football forecasting features with deterministic synthetic evidence"
 readme = "README.md"
 requires-python = ">=3.11"
-license = {file = "LICENSE"}
-authors = [{name = "Adam Polanský"}]
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{name = "Adam Luboš Polanský"}]
 dependencies = ["matplotlib>=3.8,<4"]
 
 [project.optional-dependencies]
-dev = ["pytest>=8,<9", "ruff>=0.9,<1"]
+dev = ["build>=1,<2", "pytest>=8,<9", "ruff>=0.9,<1", "twine>=5,<7"]
 
 [project.scripts]
 epl-probability-demo = "epl_probability_lab.demo:main"
+epl-feature-demo = "epl_probability_lab.feature_demo:main"
+epl-publication-check = "epl_probability_lab.publication:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.pytest.ini_options]
 addopts = "--strict-markers"
+cache_dir = ".qa/pytest-cache"
 testpaths = ["tests"]
 
 [tool.ruff]

@@ -4,7 +4,6 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main]
 
 permissions:
   contents: read
@@ -32,4 +31,6 @@ jobs:
       - run: pytest -q
       - run: ruff check .
       - run: ruff format --check .
-      - run: python -m epl_probability_lab.demo --output-dir ci-demo
+      - run: python -m epl_probability_lab.demo --output-dir .qa/ci-demo
+      - run: python -m epl_probability_lab.feature_demo --output-dir .qa/ci-feature-demo
+      - run: python -m epl_probability_lab.publication --root .

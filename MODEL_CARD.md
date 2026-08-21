@@ -1,60 +1,44 @@
 # Model card
 
-## Model overview
+## Overview
 
-The public demo estimates smoothed fictional-team attack and defence rates from a chronological
-synthetic training window, forms an independent Poisson score distribution, and derives coherent
-home/draw/away probabilities. It is intentionally small, auditable, and offline.
+The public project contains an independent-Poisson teaching demo and a v0.2 chronological feature
+engine. Both execute offline on deterministic fictional fixtures. Adam Luboš Polanský authors the
+distributed code and synthetic examples.
 
 ## Intended uses
 
-- Learning how goal distributions imply mutually consistent match probabilities.
-- Exercising a deterministic, CLI-first forecasting and evaluation pipeline.
-- Reviewing calibration, uncertainty, artifact evidence, and leakage controls.
+- Learning how score models imply coherent home/draw/away probabilities.
+- Studying point-in-time feature construction and frozen same-date state updates.
+- Testing fixed and caller-seeded Elo mechanics with synthetic invariants.
+- Reviewing explicit missingness, uncertainty, evidence, and publication controls.
 
-## Prohibited uses
+## Claim boundary
 
-Do not use the synthetic model for betting, financial decisions, player safety, eligibility,
-discipline, or any consequential decision. Do not present the demo as evidence of real-world
-predictive performance, profitability, ROI, or an edge.
-
-## Public synthetic demo
-
-The demo uses 96 generated fixtures among eight fictional teams. The first 64 rows are the training
-window and the last 32 are a chronological holdout. Its artifact contains only rates learned from
-fictional synthetic teams. It has no real team coefficients or provider identifiers.
-
-## Private historical scope
-
-Separate private work used 5,700 development matches and 380 OOS lockbox matches. Only aggregate
-metrics are published. No source rows, per-match predictions, provider mappings, real-data model
-artifacts, or evidence hashes are distributed.
-
-## Uncertainty and calibration
-
-The reliability plot compares predicted probabilities with empirical synthetic frequencies across
-fixed bins and includes the ideal-calibration reference. With only 32 holdout matches, calibration
-estimates are noisy and illustrative. Tail probability beyond the displayed score grid is
-renormalized, and this approximation is recorded in the artifact.
+The committed artifacts demonstrate reproducibility and software invariants only. They do not
+establish external validity, deployability, profitability, a betting edge, or superior forecasting
+performance. Tier-seeded Elo is implemented but not empirically evaluated and is not promotion
+eligible. The feature-engineering candidate was not promoted; the dynamic Dixon–Coles incumbent was
+retained.
 
 ## Leakage controls
 
-- Training and evaluation use a chronological split, never a random final split.
-- Holdout outcomes do not enter parameter fitting.
-- The example prediction is created from the frozen synthetic artifact.
-- No odds, provider snapshot, or current-match result is used as a feature.
+- Feature state is computed only from events strictly before each match cutoff.
+- All fixtures on one date are emitted from frozen state and updated as a batch.
+- Manager spells require distinct knowledge and effective timestamps.
+- Unknown context remains unavailable rather than being forward-filled.
+- Outcome and identity columns never enter the model feature mapping.
+- Row-order and future-mutation invariants are executable tests.
 
-## Missing context and failure modes
+## Limitations
 
-The model omits team strength, injuries, line-ups, travel, promotions, tactics, schedule congestion,
-market information, and regime changes. Independent Poisson goals may understate score dependence.
-Synthetic fitted rates do not represent real teams. Sparse calibration bins may be unstable. Data from a real
-competition can drift and can fail provider coverage or identity checks.
+The synthetic schedule is deliberately small and fictional. Referee context is **Not included**,
+and the primary implementation omits train-only feature selection. Real competitions can have postponements,
+ambiguous timestamps, format changes, sparse history, identity changes, and distribution shift.
+Fail-closed validation can therefore reject inputs that lack an adequate point-in-time contract.
 
-## Historical non-promotion decision
+## Prohibited uses
 
-The private candidate-minus-historical log-loss estimate was -0.035993 with a precommitted interval
-of [-0.072155, 0.001383]. Because the interval crossed zero, the candidate was not promoted and the
-historical-frequency fallback was retained.
-
-> Synthetic demonstration — not evidence of real-world predictive performance.
+Do not use the synthetic model or evidence for betting, financial decisions, eligibility,
+discipline, player safety, or any consequential decision. Do not represent it as real-performance
+evidence.

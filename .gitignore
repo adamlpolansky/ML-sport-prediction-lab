@@ -10,11 +10,11 @@ __pycache__/
 .ruff_cache/
 .coverage
 htmlcov/
+.qa/
 
 # Credentials and environment files
 .env
 .env.*
-!.env.example
 credentials/
 **/credentials/
 *.key
@@ -33,12 +33,26 @@ credentials/
 *.zip
 *.tar
 *.tar.gz
+*.bundle
+*.csv
+*.tsv
+*.parquet
+*.xlsx
+*.pkl
+*.joblib
+*.onnx
+
+# Explicit public synthetic exceptions
+!demo/synthetic_fixtures.csv
+!demo/feature_evidence.json
 
 # Provider payloads, snapshots and operational records
 data/raw/
 data/interim/
 data/processed/
 data/provider/
+provider_cache/
+api_responses/
 provider_payloads/
 snapshots/
 acceptance_records/
@@ -49,6 +63,8 @@ checkpoints/
 *.log
 logs/
 reports/private/
+reports/private/**
 reports/evidence/
 models/
 artifacts/private/
+artifacts/private/**
