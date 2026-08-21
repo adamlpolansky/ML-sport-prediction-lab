@@ -2,9 +2,12 @@
 
 ## Overview
 
-The public project contains an independent-Poisson teaching demo and a v0.2 chronological feature
-engine. Both execute offline on deterministic fictional fixtures. Adam Luboš Polanský authors the
-distributed code and synthetic examples.
+The public project contains an independent-Poisson teaching demo, a v0.2 chronological feature
+engine, and one timestamped EPL 2026/27 Matchweek 1 forecast pack. The demos and feature evidence
+execute offline on deterministic fictional fixtures. The forecast pack is a narrow release of real
+fixture identities and sanitized derived probabilities; its fitted artifact and historical rows are
+not distributed. Adam Luboš Polanský authors the distributed code, synthetic examples, and forecast
+dataset.
 
 ## Intended uses
 
@@ -12,6 +15,7 @@ distributed code and synthetic examples.
 - Studying point-in-time feature construction and frozen same-date state updates.
 - Testing fixed and caller-seeded Elo mechanics with synthetic invariants.
 - Reviewing explicit missingness, uncertainty, evidence, and publication controls.
+- Inspecting one immutable, timestamped pre-match probability evidence pack.
 
 ## Claim boundary
 
@@ -21,6 +25,10 @@ performance. Tier-seeded Elo is implemented but not empirically evaluated and is
 eligible. The feature-engineering candidate was not promoted; the dynamic Dixon–Coles incumbent was
 retained.
 
+The Matchweek 1 pack uses the retained Dynamic Dixon–Coles incumbent, not the unpromoted v0.2
+feature candidate. Its ten rows are prospective forecasts generated before the first kickoff. They
+are not results, betting advice, or a new performance/promotion claim.
+
 ## Leakage controls
 
 - Feature state is computed only from events strictly before each match cutoff.
@@ -29,6 +37,8 @@ retained.
 - Unknown context remains unavailable rather than being forward-filled.
 - Outcome and identity columns never enter the model feature mapping.
 - Row-order and future-mutation invariants are executable tests.
+- The forecast uses one pre-kickoff information cutoff; Matchweek 1 outcomes, live state, news,
+  lineups, injuries, managers, referees, tiers, markets, and odds are excluded.
 
 ## Limitations
 
@@ -36,6 +46,9 @@ The synthetic schedule is deliberately small and fictional. Referee context is *
 and the primary implementation omits train-only feature selection. Real competitions can have postponements,
 ambiguous timestamps, format changes, sparse history, identity changes, and distribution shift.
 Fail-closed validation can therefore reject inputs that lack an adequate point-in-time contract.
+Exact forecast generation is not publicly reproducible because the licensed/private history and
+fitted artifact are intentionally omitted. Coventry City, Hull City, and Ipswich Town use the
+incumbent's uniform neutral promoted/unseen prior, which increases cold-start uncertainty.
 
 ## Prohibited uses
 
