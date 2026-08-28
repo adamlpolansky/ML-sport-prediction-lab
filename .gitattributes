@@ -5,3 +5,7 @@ forecasts/2026-27/matchday-01/challengers/elo-poisson-v1/*.json text eol=lf
 forecasts/2026-27/matchday-01/challengers/elo-poisson-v1/*.csv text eol=lf
 forecasts/2026-27/matchday-02/challengers/elo-poisson-v1-post-mw1/*.json text eol=lf
 forecasts/2026-27/matchday-02/challengers/elo-poisson-v1-post-mw1/*.csv text eol=lf
+forecasts/2026-27/matchday-01/results/*.json text eol=lf
+forecasts/2026-27/matchday-01/results/*.csv text eol=lf
+forecasts/2026-27/tracking/*.json text eol=lf
+forecasts/2026-27/tracking/*.csv text eol=lf

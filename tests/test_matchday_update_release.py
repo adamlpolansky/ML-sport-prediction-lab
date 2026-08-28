@@ -10,6 +10,8 @@ from epl_probability_lab.matchday_update_release import (
     JSON_PATH,
     MatchdayUpdateReleaseError,
     load_json_rows,
+    market_probabilities,
+    render_table,
     validate_release_tree,
 )
 from epl_probability_lab.publication import inspect_paths
@@ -40,3 +42,13 @@ def test_mw2_update_contains_no_private_state_or_coefficients() -> None:
     content = (ROOT / JSON_PATH).read_text(encoding="utf-8").lower()
     for forbidden in ("alpha_home", "beta_home", "final_elo_state", "elo_home"):
         assert forbidden not in content
+
+
+def test_mw2_table_adds_reproducible_over_and_btts_probabilities() -> None:
+    rows = json.loads((ROOT / JSON_PATH).read_text(encoding="utf-8"))
+    table = render_table(rows)
+    assert "| O2.5 | BTTS | Modal |" in table
+    assert "Crystal Palace — Manchester City" in table
+    over, btts = market_probabilities(rows[0]["lambda_home"], rows[0]["lambda_away"])
+    assert over == pytest.approx(0.5251365098255576)
+    assert btts == pytest.approx(0.5445981821765346)

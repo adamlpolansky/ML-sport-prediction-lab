@@ -9,9 +9,11 @@ Train-only feature selection is also excluded. No source acquisition code, real 
 row, real fitted artifact, credential, cache, or season assignment is part of the release.
 
 The repaired v0.2 feature base is synthetic-only. This stacked tree adds one narrow, explicit
-exception: the ten EPL 2026/27 Matchweek 1 fixture identities/kickoffs and sanitized derived
-probabilities in `forecasts/2026-27/matchday-01`. It adds no result, odds, raw feature, provider row,
-person timeline, or fitted artifact. Older commits reachable in this public repository contain only
+exception: the EPL 2026/27 Matchweek 1 fixture identities/kickoffs, sanitized derived probabilities,
+and the ten final scores from a pinned OpenFootball CC0 ledger. The result pack and season tracker
+contain only those final scores plus deterministic metrics calculated from already-public pre-match
+forecasts. They add no odds, raw feature, provider row, person timeline, source cache, Elo state,
+coefficient, or fitted artifact. Older commits reachable in this public repository contain only
 safe, non-reconstructive aggregate summaries; they contain no real source rows, per-fixture
 predictions, or fitted model artifacts.
 
@@ -21,6 +23,7 @@ evaluation; its public claim is limited to implementation and synthetic verifica
 
 The forecast exception uses the retained Dynamic Dixon–Coles incumbent. The public feature
 candidate remains unpromoted and did not drive the forecast. The fixture facts are pinned
-OpenFootball CC0 data; Adam's forecast dataset is CC BY 4.0. The publication guard permits only the
-exact release paths and schema and rejects appended results, live fields, odds, provider fields, raw
-features, private material, and fitted parameters.
+OpenFootball CC0 data; Adam's forecast dataset and derived scorecards are CC BY 4.0. The publication
+guard permits only the exact release paths and schemas, semantically regenerates the result metrics,
+and rejects unapproved results, live fields, odds, provider fields, raw features, private material,
+and fitted parameters.

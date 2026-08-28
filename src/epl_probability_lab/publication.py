@@ -74,7 +74,17 @@ _MATCHDAY2_UPDATE_DATA = {
     "forecasts/2026-27/matchday-02/challengers/elo-poisson-v1-post-mw1/forecast.csv",
     "forecasts/2026-27/matchday-02/challengers/elo-poisson-v1-post-mw1/forecast.json",
 }
-_APPROVED_DATA = _SAFE_DATA | _FORECAST_DATA | _CHALLENGER_DATA | _MATCHDAY2_UPDATE_DATA
+_RESULTS_TRACKER_DATA = {
+    "forecasts/2026-27/matchday-01/results/model_scores.csv",
+    "forecasts/2026-27/matchday-01/results/model_summary.csv",
+    "forecasts/2026-27/matchday-01/results/results.csv",
+    "forecasts/2026-27/matchday-01/results/results.json",
+    "forecasts/2026-27/tracking/model_performance.csv",
+    "forecasts/2026-27/tracking/model_performance.json",
+}
+_APPROVED_DATA = (
+    _SAFE_DATA | _FORECAST_DATA | _CHALLENGER_DATA | _MATCHDAY2_UPDATE_DATA | _RESULTS_TRACKER_DATA
+)
 _TEXT_SUFFIXES = {
     "",
     ".cff",
@@ -346,6 +356,26 @@ def _matchday2_update_pack_findings(
     return []
 
 
+def _results_tracker_pack_findings(
+    items: Iterable[tuple[str, bytes]],
+) -> list[PublicationViolation]:
+    by_path = {_normalized(path): content for path, content in items}
+    if not any(path in by_path for path in _RESULTS_TRACKER_DATA):
+        return []
+    from .results_tracker import ResultsTrackerError, validate_release_contents
+
+    try:
+        validate_release_contents(by_path)
+    except (ResultsTrackerError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        return [
+            PublicationViolation(
+                "forecasts/2026-27/matchday-01/results",
+                str(exc),
+            )
+        ]
+    return []
+
+
 def inspect_paths(items: Iterable[tuple[str, bytes]]) -> list[PublicationViolation]:
     """Inspect normalized paths and their bytes without trusting file extensions."""
 
@@ -407,7 +437,10 @@ def scan_tree(root: Path, *, require_identity: bool = True) -> list[PublicationV
         else [path.relative_to(root) for path in root.rglob("*")]
     )
     listed_paths = {relative.as_posix() for relative in relatives}
-    for release_path in sorted(_FORECAST_DATA | _CHALLENGER_DATA | _MATCHDAY2_UPDATE_DATA):
+    release_paths = (
+        _FORECAST_DATA | _CHALLENGER_DATA | _MATCHDAY2_UPDATE_DATA | _RESULTS_TRACKER_DATA
+    )
+    for release_path in sorted(release_paths):
         if release_path not in listed_paths and (root / release_path).is_file():
             relatives.append(Path(release_path))
             listed_paths.add(release_path)
@@ -424,6 +457,7 @@ def scan_tree(root: Path, *, require_identity: bool = True) -> list[PublicationV
     violations.extend(_forecast_pack_findings(items))
     violations.extend(_challenger_pack_findings(items))
     violations.extend(_matchday2_update_pack_findings(items))
+    violations.extend(_results_tracker_pack_findings(items))
     if require_identity:
         required = ("README.md", "LICENSE", "pyproject.toml", "CITATION.cff")
         by_path = {path: content for path, content in items}
@@ -464,6 +498,7 @@ def scan_archive(path: Path) -> list[PublicationViolation]:
     violations.extend(_forecast_pack_findings(items))
     violations.extend(_challenger_pack_findings(items))
     violations.extend(_matchday2_update_pack_findings(items))
+    violations.extend(_results_tracker_pack_findings(items))
     return violations
 
 

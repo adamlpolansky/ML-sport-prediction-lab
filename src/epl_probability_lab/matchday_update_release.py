@@ -21,6 +21,7 @@ CSV_PATH = DIRECTORY / "forecast.csv"
 COVERAGE_PATH = DIRECTORY / "coverage.json"
 README_PATH = DIRECTORY / "README.md"
 PROVENANCE_PATH = DIRECTORY / "provenance.md"
+ROOT_README_PATH = Path("README.md")
 
 MODEL_ID = "fixed-elo-neutral-reentry-poisson-v1-post-mw1-refit"
 ARTIFACT_STATUS = "exploratory_post_matchweek_update"
@@ -95,6 +96,8 @@ PUBLIC_ARTIFACT_SHA256 = {
     CSV_PATH: "f15747ecee72099fa9437fc1d78369c2b698a2079bdfe8181bec000af1781735",
     COVERAGE_PATH: "3d268e29596fc7abd0b7e1534bb98a392bed5b066f28ca8251911dd176929dd2",
 }
+TABLE_START = "<!-- matchday2-table:start -->"
+TABLE_END = "<!-- matchday2-table:end -->"
 
 
 class MatchdayUpdateReleaseError(ValueError):
@@ -287,9 +290,52 @@ def validate_coverage(value: object, forecasts: Sequence[Mapping[str, Any]]) -> 
         raise MatchdayUpdateReleaseError("coverage and forecast differ")
 
 
+def market_probabilities(lambda_home: float, lambda_away: float) -> tuple[float, float]:
+    """Return exact independent-Poisson Over 2.5 and BTTS probabilities."""
+
+    total = lambda_home + lambda_away
+    p_under_2_5 = math.exp(-total) * (1.0 + total + total**2 / 2.0)
+    p_over_2_5 = 1.0 - p_under_2_5
+    p_btts = 1.0 - math.exp(-lambda_home) - math.exp(-lambda_away) + math.exp(-total)
+    return p_over_2_5, p_btts
+
+
+def render_table(rows: Sequence[Mapping[str, Any]]) -> str:
+    """Render the reader-facing MW2 forecast table from full-precision rows."""
+
+    lines = [
+        "| Kickoff (London) | Fixture | H | D | A | Pick | λ H–A | O2.5 | BTTS | Modal |",
+        "| --- | --- | ---: | ---: | ---: | --- | ---: | ---: | ---: | ---: |",
+    ]
+    labels = {"p_home": "Home", "p_draw": "Draw", "p_away": "Away"}
+    for row in rows:
+        pick = max(labels, key=lambda field: float(row[field]))
+        over, btts = market_probabilities(float(row["lambda_home"]), float(row["lambda_away"]))
+        modal = row["top_scorelines"][0]
+        lines.append(
+            f"| {str(row['kickoff_local'])[:16].replace('T', ' ')} | "
+            f"{row['home_team']} — {row['away_team']} | {float(row['p_home']):.1%} | "
+            f"{float(row['p_draw']):.1%} | {float(row['p_away']):.1%} | {labels[pick]} | "
+            f"{float(row['lambda_home']):.2f}–{float(row['lambda_away']):.2f} | "
+            f"{over:.1%} | {btts:.1%} | "
+            f"{modal['home_goals']}–{modal['away_goals']} ({float(modal['probability']):.1%}) |"
+        )
+    return "\n".join(lines)
+
+
+def _table_block(document: str) -> str:
+    if document.count(TABLE_START) != 1 or document.count(TABLE_END) != 1:
+        raise MatchdayUpdateReleaseError("MW2 table markers are missing or duplicated")
+    block = document.split(TABLE_START, 1)[1].split(TABLE_END, 1)[0]
+    return "\n".join(block.splitlines()).strip()
+
+
 def validate_release_contents(contents: Mapping[str | Path, bytes]) -> list[dict[str, Any]]:
     normalized = {Path(path).as_posix(): value for path, value in contents.items()}
-    required = {path.as_posix() for path in (*PUBLIC_ARTIFACT_SHA256, README_PATH, PROVENANCE_PATH)}
+    required = {
+        path.as_posix()
+        for path in (*PUBLIC_ARTIFACT_SHA256, README_PATH, PROVENANCE_PATH, ROOT_README_PATH)
+    }
     if not required.issubset(normalized):
         raise MatchdayUpdateReleaseError("MW2 update pack is incomplete")
     for path, expected in PUBLIC_ARTIFACT_SHA256.items():
@@ -305,16 +351,21 @@ def validate_release_contents(contents: Mapping[str | Path, bytes]) -> list[dict
         raise MatchdayUpdateReleaseError("coverage JSON is invalid") from exc
     validate_coverage(coverage, json_rows)
     readme = normalized[README_PATH.as_posix()].decode("utf-8")
+    root_readme = normalized[ROOT_README_PATH.as_posix()].decode("utf-8")
     provenance = normalized[PROVENANCE_PATH.as_posix()].decode("utf-8")
     if ARTIFACT_STATUS not in readme or "not a promoted champion" not in readme.lower():
         raise MatchdayUpdateReleaseError("claim boundary missing from release README")
     if ARTIFACT_STATUS not in provenance or "promotion performed: false" not in provenance.lower():
         raise MatchdayUpdateReleaseError("claim boundary missing from provenance")
+    expected_table = render_table(json_rows)
+    for path, document in ((README_PATH, readme), (ROOT_README_PATH, root_readme)):
+        if _table_block(document) != expected_table:
+            raise MatchdayUpdateReleaseError(f"{path.as_posix()} table does not match machine rows")
     return json_rows
 
 
 def validate_release_tree(root: Path) -> list[dict[str, Any]]:
-    paths = (*PUBLIC_ARTIFACT_SHA256, README_PATH, PROVENANCE_PATH)
+    paths = (*PUBLIC_ARTIFACT_SHA256, README_PATH, PROVENANCE_PATH, ROOT_README_PATH)
     return validate_release_contents({path: (root / path).read_bytes() for path in paths})
 
 

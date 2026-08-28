@@ -1,0 +1,11 @@
+fixture_key,kickoff_utc,home_team,away_team,home_goals,away_goals,outcome
+epl-mw01-01,2026-08-21T19:00:00Z,Arsenal,Coventry City,3,0,H
+epl-mw01-02,2026-08-22T11:30:00Z,Hull City,Manchester United,2,0,H
+epl-mw01-03,2026-08-22T14:00:00Z,Everton,Crystal Palace,2,0,H
+epl-mw01-04,2026-08-22T14:00:00Z,Ipswich Town,Sunderland,2,1,H
+epl-mw01-05,2026-08-22T14:00:00Z,Nottingham Forest,Leeds United,0,1,A
+epl-mw01-06,2026-08-22T16:30:00Z,Brentford,Tottenham Hotspur,3,0,H
+epl-mw01-07,2026-08-23T13:00:00Z,Brighton & Hove Albion,Aston Villa,4,0,H
+epl-mw01-08,2026-08-23T13:00:00Z,Manchester City,AFC Bournemouth,2,1,H
+epl-mw01-09,2026-08-23T15:30:00Z,Newcastle United,Liverpool,2,2,D
+epl-mw01-10,2026-08-24T19:00:00Z,Fulham,Chelsea,2,3,A

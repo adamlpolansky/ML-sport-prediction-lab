@@ -1,0 +1,63 @@
+{
+  "schema_version": "epl-model-performance-tracker/v1",
+  "competition": "EPL",
+  "season": "2026-27",
+  "rows": [
+    {
+      "season": "2026-27",
+      "matchweek": 1,
+      "model_family": "dynamic-dixon-coles",
+      "model_id": "dynamic-dixon-coles-incumbent-2026-27-v1",
+      "forecast_status": "published_pre_match",
+      "result_status": "scored",
+      "fixtures_forecast": 10,
+      "fixtures_scored": 10,
+      "hda_log_loss": 0.949651401679,
+      "hda_brier_score": 0.558339353456,
+      "hda_top1_accuracy": 0.6,
+      "goal_mae": 0.890227964678
+    },
+    {
+      "season": "2026-27",
+      "matchweek": 1,
+      "model_family": "elo-poisson",
+      "model_id": "fixed-elo-neutral-reentry-poisson-v1",
+      "forecast_status": "published_pre_match",
+      "result_status": "scored",
+      "fixtures_forecast": 10,
+      "fixtures_scored": 10,
+      "hda_log_loss": 0.947534657838,
+      "hda_brier_score": 0.561494687381,
+      "hda_top1_accuracy": 0.5,
+      "goal_mae": 0.925990933436
+    },
+    {
+      "season": "2026-27",
+      "matchweek": 2,
+      "model_family": "dynamic-dixon-coles",
+      "model_id": "dynamic-dixon-coles-incumbent-2026-27-v1",
+      "forecast_status": "not_released",
+      "result_status": "not_applicable",
+      "fixtures_forecast": 0,
+      "fixtures_scored": 0,
+      "hda_log_loss": null,
+      "hda_brier_score": null,
+      "hda_top1_accuracy": null,
+      "goal_mae": null
+    },
+    {
+      "season": "2026-27",
+      "matchweek": 2,
+      "model_family": "elo-poisson",
+      "model_id": "fixed-elo-neutral-reentry-poisson-v1-post-mw1-refit",
+      "forecast_status": "published_pre_match",
+      "result_status": "pending",
+      "fixtures_forecast": 10,
+      "fixtures_scored": 0,
+      "hda_log_loss": null,
+      "hda_brier_score": null,
+      "hda_top1_accuracy": null,
+      "goal_mae": null
+    }
+  ]
+}
