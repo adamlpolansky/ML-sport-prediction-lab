@@ -1,0 +1,422 @@
+[
+  {
+    "artifact_status": "exploratory_post_matchweek_update",
+    "away_neutral_reentry": false,
+    "away_team": "Manchester City",
+    "competition": "EPL",
+    "fixture_key": "epl-mw02-01",
+    "forecast_id": "epl-2026-27-mw02-elo-poisson-v1-post-mw1",
+    "generated_at_utc": "2026-08-28T16:28:10Z",
+    "home_neutral_reentry": false,
+    "home_team": "Crystal Palace",
+    "information_cutoff_utc": "2026-08-28T16:28:10Z",
+    "kickoff_local": "2026-08-28T20:00:00+01:00",
+    "kickoff_utc": "2026-08-28T19:00:00Z",
+    "lambda_away": 1.6623825887702854,
+    "lambda_home": 1.1149956986862517,
+    "matchday": 2,
+    "model_id": "fixed-elo-neutral-reentry-poisson-v1-post-mw1-refit",
+    "p_away": 0.5012583640575691,
+    "p_draw": 0.24338423804013704,
+    "p_home": 0.25535739790229384,
+    "score_max": 7,
+    "season": "2026-27",
+    "tail_mass": 0.00035709528771066257,
+    "timezone": "Europe/London",
+    "top_scorelines": [
+      {
+        "away_goals": 1,
+        "home_goals": 1,
+        "probability": 0.11533449580455044
+      },
+      {
+        "away_goals": 1,
+        "home_goals": 0,
+        "probability": 0.10343940872636888
+      },
+      {
+        "away_goals": 2,
+        "home_goals": 1,
+        "probability": 0.09586502885504208
+      }
+    ]
+  },
+  {
+    "artifact_status": "exploratory_post_matchweek_update",
+    "away_neutral_reentry": false,
+    "away_team": "Nottingham Forest",
+    "competition": "EPL",
+    "fixture_key": "epl-mw02-02",
+    "forecast_id": "epl-2026-27-mw02-elo-poisson-v1-post-mw1",
+    "generated_at_utc": "2026-08-28T16:28:10Z",
+    "home_neutral_reentry": false,
+    "home_team": "Liverpool",
+    "information_cutoff_utc": "2026-08-28T16:28:10Z",
+    "kickoff_local": "2026-08-29T12:30:00+01:00",
+    "kickoff_utc": "2026-08-29T11:30:00Z",
+    "lambda_away": 0.9839280530075852,
+    "lambda_home": 1.8415214684007781,
+    "matchday": 2,
+    "model_id": "fixed-elo-neutral-reentry-poisson-v1-post-mw1-refit",
+    "p_away": 0.1989062696238611,
+    "p_draw": 0.22649232097342775,
+    "p_home": 0.5746014094027112,
+    "score_max": 7,
+    "season": "2026-27",
+    "tail_mass": 0.0006591747111136526,
+    "timezone": "Europe/London",
+    "top_scorelines": [
+      {
+        "away_goals": 0,
+        "home_goals": 1,
+        "probability": 0.1092410889065583
+      },
+      {
+        "away_goals": 1,
+        "home_goals": 1,
+        "probability": 0.10748537191625841
+      },
+      {
+        "away_goals": 0,
+        "home_goals": 2,
+        "probability": 0.1005849052264526
+      }
+    ]
+  },
+  {
+    "artifact_status": "exploratory_post_matchweek_update",
+    "away_neutral_reentry": false,
+    "away_team": "Everton",
+    "competition": "EPL",
+    "fixture_key": "epl-mw02-03",
+    "forecast_id": "epl-2026-27-mw02-elo-poisson-v1-post-mw1",
+    "generated_at_utc": "2026-08-28T16:28:10Z",
+    "home_neutral_reentry": false,
+    "home_team": "AFC Bournemouth",
+    "information_cutoff_utc": "2026-08-28T16:28:10Z",
+    "kickoff_local": "2026-08-29T15:00:00+01:00",
+    "kickoff_utc": "2026-08-29T14:00:00Z",
+    "lambda_away": 1.0806202321549503,
+    "lambda_home": 1.6835657107197617,
+    "matchday": 2,
+    "model_id": "fixed-elo-neutral-reentry-poisson-v1-post-mw1-refit",
+    "p_away": 0.24375620065699716,
+    "p_draw": 0.24177049313313081,
+    "p_home": 0.5144733062098721,
+    "score_max": 7,
+    "season": "2026-27",
+    "tail_mass": 0.00038165769760667434,
+    "timezone": "Europe/London",
+    "top_scorelines": [
+      {
+        "away_goals": 1,
+        "home_goals": 1,
+        "probability": 0.11470919918397125
+      },
+      {
+        "away_goals": 0,
+        "home_goals": 1,
+        "probability": 0.10615125996227237
+      },
+      {
+        "away_goals": 1,
+        "home_goals": 2,
+        "probability": 0.09656023722512865
+      }
+    ]
+  },
+  {
+    "artifact_status": "exploratory_post_matchweek_update",
+    "away_neutral_reentry": true,
+    "away_team": "Hull City",
+    "competition": "EPL",
+    "fixture_key": "epl-mw02-04",
+    "forecast_id": "epl-2026-27-mw02-elo-poisson-v1-post-mw1",
+    "generated_at_utc": "2026-08-28T16:28:10Z",
+    "home_neutral_reentry": true,
+    "home_team": "Coventry City",
+    "information_cutoff_utc": "2026-08-28T16:28:10Z",
+    "kickoff_local": "2026-08-29T15:00:00+01:00",
+    "kickoff_utc": "2026-08-29T14:00:00Z",
+    "lambda_away": 1.2138742929928596,
+    "lambda_home": 1.5063174497086453,
+    "matchday": 2,
+    "model_id": "fixed-elo-neutral-reentry-poisson-v1-post-mw1-refit",
+    "p_away": 0.306143058052997,
+    "p_draw": 0.253954726810021,
+    "p_home": 0.4399022151369818,
+    "score_max": 7,
+    "season": "2026-27",
+    "tail_mass": 0.00021444431934114494,
+    "timezone": "Europe/London",
+    "top_scorelines": [
+      {
+        "away_goals": 1,
+        "home_goals": 1,
+        "probability": 0.1204534101291076
+      },
+      {
+        "away_goals": 0,
+        "home_goals": 1,
+        "probability": 0.09923054703804995
+      },
+      {
+        "away_goals": 1,
+        "home_goals": 2,
+        "probability": 0.09072053677719343
+      }
+    ]
+  },
+  {
+    "artifact_status": "exploratory_post_matchweek_update",
+    "away_neutral_reentry": false,
+    "away_team": "Newcastle United",
+    "competition": "EPL",
+    "fixture_key": "epl-mw02-05",
+    "forecast_id": "epl-2026-27-mw02-elo-poisson-v1-post-mw1",
+    "generated_at_utc": "2026-08-28T16:28:10Z",
+    "home_neutral_reentry": false,
+    "home_team": "Tottenham Hotspur",
+    "information_cutoff_utc": "2026-08-28T16:28:10Z",
+    "kickoff_local": "2026-08-29T17:30:00+01:00",
+    "kickoff_utc": "2026-08-29T16:30:00Z",
+    "lambda_away": 1.3503274602878454,
+    "lambda_home": 1.3603628376952601,
+    "matchday": 2,
+    "model_id": "fixed-elo-neutral-reentry-poisson-v1-post-mw1-refit",
+    "p_away": 0.3688785681361291,
+    "p_draw": 0.2576293452745855,
+    "p_home": 0.3734920865892852,
+    "score_max": 7,
+    "season": "2026-27",
+    "tail_mass": 0.00017099886968374722,
+    "timezone": "Europe/London",
+    "top_scorelines": [
+      {
+        "away_goals": 1,
+        "home_goals": 1,
+        "probability": 0.12216035626566119
+      },
+      {
+        "away_goals": 0,
+        "home_goals": 1,
+        "probability": 0.09046720877587766
+      },
+      {
+        "away_goals": 1,
+        "home_goals": 0,
+        "probability": 0.08979983345665811
+      }
+    ]
+  },
+  {
+    "artifact_status": "exploratory_post_matchweek_update",
+    "away_neutral_reentry": false,
+    "away_team": "Brighton & Hove Albion",
+    "competition": "EPL",
+    "fixture_key": "epl-mw02-06",
+    "forecast_id": "epl-2026-27-mw02-elo-poisson-v1-post-mw1",
+    "generated_at_utc": "2026-08-28T16:28:10Z",
+    "home_neutral_reentry": false,
+    "home_team": "Chelsea",
+    "information_cutoff_utc": "2026-08-28T16:28:10Z",
+    "kickoff_local": "2026-08-30T14:00:00+01:00",
+    "kickoff_utc": "2026-08-30T13:00:00Z",
+    "lambda_away": 1.1852953713883871,
+    "lambda_home": 1.541045724236483,
+    "matchday": 2,
+    "model_id": "fixed-elo-neutral-reentry-poisson-v1-post-mw1-refit",
+    "p_away": 0.29279836133891346,
+    "p_draw": 0.2521271678061139,
+    "p_home": 0.45507447085497266,
+    "score_max": 7,
+    "season": "2026-27",
+    "tail_mass": 0.000236975023737096,
+    "timezone": "Europe/London",
+    "top_scorelines": [
+      {
+        "away_goals": 1,
+        "home_goals": 1,
+        "probability": 0.11959420847715557
+      },
+      {
+        "away_goals": 0,
+        "home_goals": 1,
+        "probability": 0.10089823293334028
+      },
+      {
+        "away_goals": 1,
+        "home_goals": 2,
+        "probability": 0.09215007180858356
+      }
+    ]
+  },
+  {
+    "artifact_status": "exploratory_post_matchweek_update",
+    "away_neutral_reentry": false,
+    "away_team": "Brentford",
+    "competition": "EPL",
+    "fixture_key": "epl-mw02-07",
+    "forecast_id": "epl-2026-27-mw02-elo-poisson-v1-post-mw1",
+    "generated_at_utc": "2026-08-28T16:28:10Z",
+    "home_neutral_reentry": false,
+    "home_team": "Leeds United",
+    "information_cutoff_utc": "2026-08-28T16:28:10Z",
+    "kickoff_local": "2026-08-30T14:00:00+01:00",
+    "kickoff_utc": "2026-08-30T13:00:00Z",
+    "lambda_away": 1.2674109254681147,
+    "lambda_home": 1.445388246187986,
+    "matchday": 2,
+    "model_id": "fixed-elo-neutral-reentry-poisson-v1-post-mw1-refit",
+    "p_away": 0.3309872100430704,
+    "p_draw": 0.2563405549153803,
+    "p_home": 0.4126722350415493,
+    "score_max": 7,
+    "season": "2026-27",
+    "tail_mass": 0.0001861551426142194,
+    "timezone": "Europe/London",
+    "top_scorelines": [
+      {
+        "away_goals": 1,
+        "home_goals": 1,
+        "probability": 0.12157075342483178
+      },
+      {
+        "away_goals": 0,
+        "home_goals": 1,
+        "probability": 0.09592055029818364
+      },
+      {
+        "away_goals": 1,
+        "home_goals": 2,
+        "probability": 0.08785846904023484
+      }
+    ]
+  },
+  {
+    "artifact_status": "exploratory_post_matchweek_update",
+    "away_neutral_reentry": false,
+    "away_team": "Fulham",
+    "competition": "EPL",
+    "fixture_key": "epl-mw02-08",
+    "forecast_id": "epl-2026-27-mw02-elo-poisson-v1-post-mw1",
+    "generated_at_utc": "2026-08-28T16:28:10Z",
+    "home_neutral_reentry": false,
+    "home_team": "Sunderland",
+    "information_cutoff_utc": "2026-08-28T16:28:10Z",
+    "kickoff_local": "2026-08-30T14:00:00+01:00",
+    "kickoff_utc": "2026-08-30T13:00:00Z",
+    "lambda_away": 1.2237247317663893,
+    "lambda_home": 1.4947153491489273,
+    "matchday": 2,
+    "model_id": "fixed-elo-neutral-reentry-poisson-v1-post-mw1-refit",
+    "p_away": 0.31073119892473156,
+    "p_draw": 0.2544929187259066,
+    "p_home": 0.4347758823493618,
+    "score_max": 7,
+    "season": "2026-27",
+    "tail_mass": 0.0002079591693798788,
+    "timezone": "Europe/London",
+    "top_scorelines": [
+      {
+        "away_goals": 1,
+        "home_goals": 1,
+        "probability": 0.12070604770628435
+      },
+      {
+        "away_goals": 0,
+        "home_goals": 1,
+        "probability": 0.09863823503186933
+      },
+      {
+        "away_goals": 1,
+        "home_goals": 2,
+        "probability": 0.09021059112084294
+      }
+    ]
+  },
+  {
+    "artifact_status": "exploratory_post_matchweek_update",
+    "away_neutral_reentry": true,
+    "away_team": "Ipswich Town",
+    "competition": "EPL",
+    "fixture_key": "epl-mw02-09",
+    "forecast_id": "epl-2026-27-mw02-elo-poisson-v1-post-mw1",
+    "generated_at_utc": "2026-08-28T16:28:10Z",
+    "home_neutral_reentry": false,
+    "home_team": "Manchester United",
+    "information_cutoff_utc": "2026-08-28T16:28:10Z",
+    "kickoff_local": "2026-08-30T16:30:00+01:00",
+    "kickoff_utc": "2026-08-30T15:30:00Z",
+    "lambda_away": 0.8862243944656246,
+    "lambda_home": 2.0353046190331128,
+    "matchday": 2,
+    "model_id": "fixed-elo-neutral-reentry-poisson-v1-post-mw1-refit",
+    "p_away": 0.1549521036451207,
+    "p_draw": 0.20468395954845728,
+    "p_home": 0.6403639368064222,
+    "score_max": 8,
+    "season": "2026-27",
+    "tail_mass": 0.00026985465687845434,
+    "timezone": "Europe/London",
+    "top_scorelines": [
+      {
+        "away_goals": 0,
+        "home_goals": 2,
+        "probability": 0.11156863602737253
+      },
+      {
+        "away_goals": 0,
+        "home_goals": 1,
+        "probability": 0.10963335412698476
+      },
+      {
+        "away_goals": 1,
+        "home_goals": 2,
+        "probability": 0.09887484690471389
+      }
+    ]
+  },
+  {
+    "artifact_status": "exploratory_post_matchweek_update",
+    "away_neutral_reentry": false,
+    "away_team": "Arsenal",
+    "competition": "EPL",
+    "fixture_key": "epl-mw02-10",
+    "forecast_id": "epl-2026-27-mw02-elo-poisson-v1-post-mw1",
+    "generated_at_utc": "2026-08-28T16:28:10Z",
+    "home_neutral_reentry": false,
+    "home_team": "Aston Villa",
+    "information_cutoff_utc": "2026-08-28T16:28:10Z",
+    "kickoff_local": "2026-08-31T20:00:00+01:00",
+    "kickoff_utc": "2026-08-31T19:00:00Z",
+    "lambda_away": 1.469854745323096,
+    "lambda_home": 1.2543383059988695,
+    "matchday": 2,
+    "model_id": "fixed-elo-neutral-reentry-poisson-v1-post-mw1-refit",
+    "p_away": 0.4217454031456743,
+    "p_draw": 0.25517883665277546,
+    "p_home": 0.32307576020155016,
+    "score_max": 7,
+    "season": "2026-27",
+    "tail_mass": 0.00019823307449196026,
+    "timezone": "Europe/London",
+    "top_scorelines": [
+      {
+        "away_goals": 1,
+        "home_goals": 1,
+        "probability": 0.12096875037924083
+      },
+      {
+        "away_goals": 1,
+        "home_goals": 0,
+        "probability": 0.09644029031140014
+      },
+      {
+        "away_goals": 2,
+        "home_goals": 1,
+        "probability": 0.08890324589036609
+      }
+    ]
+  }
+]

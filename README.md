@@ -131,4 +131,17 @@ Elo state are not distributed.
 The published lambdas reproduce every listed probability through a validated independent-Poisson
 matrix. This remains research output, not betting advice or a profitability claim.
 
+## EPL 2026/27 Matchweek 2 Elo–Poisson update
+
+The [Matchweek 2 update pack](forecasts/2026-27/matchday-02/challengers/elo-poisson-v1-post-mw1/README.md)
+uses all ten completed Matchweek 1 results to update fixed Elo and refit the unchanged
+independent-Poisson mapping. It contains ten timestamped pre-match forecasts generated before the
+first Matchweek 2 kickoff. This is an exploratory post-matchweek update, not a promoted champion,
+and no claim is made that a ten-match refit improves predictive performance.
+
+Full-precision [JSON](forecasts/2026-27/matchday-02/challengers/elo-poisson-v1-post-mw1/forecast.json),
+[CSV](forecasts/2026-27/matchday-02/challengers/elo-poisson-v1-post-mw1/forecast.csv), and
+[provenance](forecasts/2026-27/matchday-02/challengers/elo-poisson-v1-post-mw1/provenance.md) are
+available. Private coefficients, Elo state, and training rows remain undistributed.
+
 Independent research project; not affiliated with or endorsed by the Premier League or its clubs.

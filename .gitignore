@@ -45,6 +45,7 @@ credentials/
 # Explicit public synthetic exceptions
 !demo/synthetic_fixtures.csv
 !demo/feature_evidence.json
+!forecasts/2026-27/matchday-02/challengers/elo-poisson-v1-post-mw1/forecast.csv
 
 # Provider payloads, snapshots and operational records
 data/raw/
