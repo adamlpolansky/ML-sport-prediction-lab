@@ -1,5 +1,7 @@
-season,matchweek,model_family,model_id,forecast_status,result_status,fixtures_forecast,fixtures_scored,hda_log_loss,hda_brier_score,hda_top1_accuracy,goal_mae
-2026-27,1,dynamic-dixon-coles,dynamic-dixon-coles-incumbent-2026-27-v1,published_pre_match,scored,10,10,0.949651401679,0.558339353456,0.6,0.890227964678
-2026-27,1,elo-poisson,fixed-elo-neutral-reentry-poisson-v1,published_pre_match,scored,10,10,0.947534657838,0.561494687381,0.5,0.925990933436
-2026-27,2,dynamic-dixon-coles,dynamic-dixon-coles-incumbent-2026-27-v1,not_released,not_applicable,0,0,,,,
-2026-27,2,elo-poisson,fixed-elo-neutral-reentry-poisson-v1-post-mw1-refit,published_pre_match,pending,10,0,,,,
+season,matchweek,model_family,model_id,forecast_status,result_status,fixtures_forecast,fixtures_scored,hda_log_loss,hda_brier_score,hda_top1_accuracy,goal_mae,hda_correct,goal_bias,total_goals_mae,over_2_5_available,over_2_5_selected,over_2_5_won,over_2_5_lost,over_2_5_hit_rate,over_2_5_coverage,btts_available,btts_selected,btts_won,btts_lost,btts_hit_rate,btts_coverage
+2026-27,1,dynamic-dixon-coles,dynamic-dixon-coles-incumbent-2026-27-v1,published_pre_match,scored,10,10,0.949651401679,0.558339353456,0.6,0.890227964678,6,0.151202425659,0.892122730993,10,10,6,4,0.6,1.0,10,10,5,5,0.5,1.0
+2026-27,1,elo-poisson,fixed-elo-neutral-reentry-poisson-v1,published_pre_match,scored,10,10,0.947534657838,0.561494687381,0.5,0.925990933436,5,0.111257982798,0.906551539918,10,10,7,3,0.7,1.0,10,10,5,5,0.5,1.0
+2026-27,2,dynamic-dixon-coles,dynamic-dixon-coles-incumbent-2026-27-v1,not_released,not_applicable,0,0,,,,,,,,,,,,,,,,,,,
+2026-27,2,elo-poisson,fixed-elo-neutral-reentry-poisson-v1-post-mw1-refit,published_pre_match,scored,10,10,1.006697406993,0.604290913735,0.5,1.031456942313,5,0.219940089728,1.909980236946,10,10,4,6,0.4,1.0,10,10,6,4,0.6,1.0
+2026-27,3,dynamic-dixon-coles,dynamic-dixon-coles-incumbent-2026-27-v1,not_released,not_applicable,0,0,,,,,,,,,,,,,,,,,,,
+2026-27,3,elo-poisson,fixed-elo-neutral-reentry-poisson-v1-post-mw1-refit-post-mw2-elo,published_pre_match_partial,pending,3,0,,,,,,,,,,,,,,,,,,,

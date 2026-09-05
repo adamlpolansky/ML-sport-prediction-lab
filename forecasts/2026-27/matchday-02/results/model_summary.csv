@@ -1,0 +1,2 @@
+season,matchweek,model_family,model_id,fixtures_scored,hda_log_loss,hda_brier_score,hda_top1_accuracy,goal_mae
+2026-27,2,elo-poisson,fixed-elo-neutral-reentry-poisson-v1-post-mw1-refit,10,1.006697406993,0.604290913735,0.5,1.031456942313

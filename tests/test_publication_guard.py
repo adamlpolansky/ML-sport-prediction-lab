@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 from epl_probability_lab.demo import DEFAULT_DEMO_CONFIG
 from epl_probability_lab.publication import inspect_paths
 from epl_probability_lab.synthetic import generate_fixtures
@@ -22,6 +24,13 @@ def _fixture_csv_bytes() -> bytes:
 
 def test_safe_synthetic_artifact_is_accepted() -> None:
     assert inspect_paths([("demo/synthetic_fixtures.csv", _fixture_csv_bytes())]) == []
+
+
+def test_dc_market_supplement_cannot_be_replaced_or_expanded() -> None:
+    path = "forecasts/2026-27/tracking/dc_mw1_goal_markets.json"
+    content = (Path(__file__).resolve().parents[1] / path).read_bytes()
+    assert inspect_paths([(path, content)]) == []
+    assert inspect_paths([(path, content + b" ")])
 
 
 def test_real_row_disguised_as_approved_synthetic_fixture_is_rejected() -> None:

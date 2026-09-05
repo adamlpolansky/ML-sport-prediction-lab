@@ -36,6 +36,25 @@ The score facts remain CC0-1.0/public domain. Adam Luboš Polanský licenses the
 model scores, aggregate scorecard, and season tracker under CC BY 4.0. No source payload, odds,
 private row, fitted coefficient, or Elo state is included.
 
+## September 5 extension: MW2 results and MW3 forecasts
+
+The same named result exception covers all ten MW2 scores through 31 August 2026 and the strict
+50%-decision summaries of the existing MW1–2 forecasts. The pinned OpenFootball commit is
+`0690446f794fde748ea4b994244def699c6a65b2`; source byte SHA-256 is
+`10d40e1e7a17e90b64973b83fe2ea78c672819372a186fe87a80b17f4c7c575a`.
+The partial MW3 release adds three prospective forecasts and all ten fixture coverage states.
+Fixture and score facts retain CC0-1.0; the derived forecast and metric artifacts are CC BY 4.0.
+See [MW3 provenance](../forecasts/2026-27/matchday-03/challengers/elo-poisson-v1-post-mw2/provenance.md).
+
+The tracker also scores H/D/A argmax picks on every available fixture and compares original
+goal expectations with observed final goals. Each binary market selects the more probable side:
+Over 2.5 / BTTS Yes above 50%, Under 2.5 / BTTS No below 50%, no pick at exactly 50%.
+Historical Elo market probabilities are retrospectively derived from the
+original published lambdas using the unbounded independent-Poisson convention stated in MW2.
+The DC MW1 goal-market supplement is a retrospective replay of the original hash-verified
+frozen artifact, with exact agreement against all published MW1 H/D/A and goal expectations.
+It carries its own provenance commitments and does not backdate the new market outputs.
+
 ## Material not redistributed
 
 Outside the explicit forecast and result paths, this repository redistributes no Football-Data

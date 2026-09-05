@@ -28,3 +28,13 @@ derived artifacts outside version control.
 
 See [docs/data_provenance_and_licenses.md](docs/data_provenance_and_licenses.md) for the release
 boundary.
+
+The September update extends these exact exceptions to ten MW2 final scores, the derived MW1–2
+threshold-selection and cumulative scorecards, and the three prospective MW3 forecasts with a
+ten-fixture coverage ledger. Source facts remain CC0-1.0; derived forecasts and scorecards are
+CC BY 4.0, attributed to Adam Luboš Polanský. The MW3 update manifest contains only provenance
+hashes and aggregate update metadata; fitted coefficients and full Elo state remain local.
+The named tracker exception also includes `dc_mw1_goal_markets.json`: ten sanitized Over 2.5
+and BTTS probabilities derived retrospectively from the original verified frozen Dixon–Coles
+artifact, after exact replay of its published MW1 predictions. It is CC BY 4.0 under the same
+attribution. Neither the frozen model nor its fitted parameters are redistributed.

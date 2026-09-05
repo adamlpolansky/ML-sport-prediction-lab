@@ -1,0 +1,101 @@
+{
+  "schema_version": "epl-mw01-dc-goal-market-supplement/v1",
+  "status": "retrospectively_derived_frozen_artifact_replay",
+  "generated_at_utc": "2026-09-05T14:23:30Z",
+  "model_id": "dynamic-dixon-coles-incumbent-2026-27-v1",
+  "original_forecast_generated_at_utc": "2026-08-21T12:06:03Z",
+  "original_information_cutoff_utc": "2026-08-21T12:04:19Z",
+  "original_forecast_sha256": "de5075834b6e6c6a873df6de6f3eb53ad0e71ee756b20c5e18ac1143658a571b",
+  "frozen_artifact_file_sha256": "098b7fcbcffc0c218e417d886dea399d4d89e790fc0314084f02be1f087e9761",
+  "frozen_artifact_content_sha256": "62990a66c59263d0f7ea053bf89a10c881fd1c97483e5992475fafac74abef19",
+  "external_trust_file_sha256": "a23c2d4b395a8d4159428c79ffecb9d80c0245ceb85e9f08420363f87bdb6d32",
+  "training_manifest_sha256": "ca2c1bfcc79185b620301e6af96da2b8c6b555f2f29d58abaffa4fee8de68855",
+  "original_artifact_code_commit": "555a2382f34e721cbc7790963c0c0b6b6e099c55",
+  "replay_code_commit": "0b1c48b39359a247a24785021a9b46ab4b86453f",
+  "market_probabilities_originally_published": false,
+  "training_or_refit_performed": false,
+  "outcomes_used_to_generate_probabilities": false,
+  "method": "Verified frozen-artifact inference replay using only the original ten fixture identities and the original uniform promoted-team flags. Binary markets are the original Dixon-Coles goal-output convention; the original H/D/A temperature calibration remains unchanged. No independent-Poisson approximation is used for this model.",
+  "interpretation": "These goal-market probabilities were derived retrospectively from the committed original model and were not published before Matchweek 1. Threshold-selection success is therefore a retrospective diagnostic, not a record of published bets.",
+  "replay_verification": {
+    "fixture_count": 10,
+    "original_fixture_identities_matched": true,
+    "original_modal_scores_matched": true,
+    "maximum_absolute_error_hda": 0.0,
+    "maximum_absolute_error_expected_goals": 0.0,
+    "maximum_absolute_error_tail_mass": 0.0,
+    "maximum_absolute_error_modal_probability": 0.0
+  },
+  "markets": [
+    {
+      "fixture_key": "epl-mw01-01",
+      "home_team": "Arsenal",
+      "away_team": "Coventry City",
+      "p_over_2_5": 0.4869158525101465,
+      "p_btts": 0.4079529847668176
+    },
+    {
+      "fixture_key": "epl-mw01-02",
+      "home_team": "Hull City",
+      "away_team": "Manchester United",
+      "p_over_2_5": 0.5642803597742498,
+      "p_btts": 0.582345458577958
+    },
+    {
+      "fixture_key": "epl-mw01-03",
+      "home_team": "Everton",
+      "away_team": "Crystal Palace",
+      "p_over_2_5": 0.4438200706676014,
+      "p_btts": 0.4927106575096827
+    },
+    {
+      "fixture_key": "epl-mw01-04",
+      "home_team": "Ipswich Town",
+      "away_team": "Sunderland",
+      "p_over_2_5": 0.4351225568063532,
+      "p_btts": 0.49660195956108005
+    },
+    {
+      "fixture_key": "epl-mw01-05",
+      "home_team": "Nottingham Forest",
+      "away_team": "Leeds United",
+      "p_over_2_5": 0.46938154381442876,
+      "p_btts": 0.5123762955751019
+    },
+    {
+      "fixture_key": "epl-mw01-06",
+      "home_team": "Brentford",
+      "away_team": "Tottenham Hotspur",
+      "p_over_2_5": 0.5250334502798354,
+      "p_btts": 0.5413741327829016
+    },
+    {
+      "fixture_key": "epl-mw01-07",
+      "home_team": "Brighton & Hove Albion",
+      "away_team": "Aston Villa",
+      "p_over_2_5": 0.5088950832031514,
+      "p_btts": 0.5546727173217587
+    },
+    {
+      "fixture_key": "epl-mw01-08",
+      "home_team": "Manchester City",
+      "away_team": "AFC Bournemouth",
+      "p_over_2_5": 0.5265563439876149,
+      "p_btts": 0.5185255594306051
+    },
+    {
+      "fixture_key": "epl-mw01-09",
+      "home_team": "Newcastle United",
+      "away_team": "Liverpool",
+      "p_over_2_5": 0.634216356919694,
+      "p_btts": 0.6528898304865741
+    },
+    {
+      "fixture_key": "epl-mw01-10",
+      "home_team": "Fulham",
+      "away_team": "Chelsea",
+      "p_over_2_5": 0.4425764839079592,
+      "p_btts": 0.5030793370947515
+    }
+  ]
+}

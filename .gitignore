@@ -50,6 +50,13 @@ credentials/
 !forecasts/2026-27/matchday-01/results/model_scores.csv
 !forecasts/2026-27/matchday-01/results/model_summary.csv
 !forecasts/2026-27/tracking/model_performance.csv
+!forecasts/2026-27/tracking/betting_selections.csv
+!forecasts/2026-27/tracking/cumulative_performance.csv
+!forecasts/2026-27/tracking/goal_deviations.csv
+!forecasts/2026-27/matchday-02/results/results.csv
+!forecasts/2026-27/matchday-02/results/model_scores.csv
+!forecasts/2026-27/matchday-02/results/model_summary.csv
+!forecasts/2026-27/matchday-03/challengers/elo-poisson-v1-post-mw2/forecast.csv
 
 # Provider payloads, snapshots and operational records
 data/raw/

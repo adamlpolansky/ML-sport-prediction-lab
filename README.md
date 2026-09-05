@@ -1,5 +1,48 @@
 # EPL Probability Forecasting Lab
 
+## Latest: Matchweek 3 and results through Matchweek 2
+
+The [Matchweek 3 release](forecasts/2026-27/matchday-03/challengers/elo-poisson-v1-post-mw2/README.md)
+uses Elo updated after all ten MW2 results and the frozen post-MW1 Poisson mapping.
+Three fixtures still have prospective forecasts; seven had passed kickoff at generation.
+
+<!-- matchday3-table:start -->
+| Kickoff (Prague) | Fixture | Home | Draw | Away | H/D/A pick | Goals H–A | O2.5 | BTTS | Modal |
+| --- | --- | ---: | ---: | ---: | --- | ---: | ---: | ---: | --- |
+| 2026-09-05 18:30 | Hull City — Aston Villa | 30.8% | 25.3% | 43.9% | Away | 1.22–1.51 | 51.4% (Over) | 55.0% (Yes) | 1–1 (12.0%) |
+| 2026-09-06 15:00 | Everton — Manchester United | 37.4% | 25.8% | 36.9% | Home | 1.36–1.35 | 50.9% (Over) | 55.1% (Yes) | 1–1 (12.2%) |
+| 2026-09-06 17:30 | Arsenal — Chelsea | 62.9% | 20.9% | 16.2% | Home | 2.00–0.90 | 55.4% (Over) | 51.4% (Yes) | 1–0 (11.0%) |
+<!-- matchday3-table:end -->
+
+Times are Europe/Prague. The H/D/A pick is the highest-probability outcome in every match,
+including a draw when it ranks first; there is no confidence threshold for this metric.
+For **Over/Under 2.5** and **BTTS Yes/No** separately, pick the more probable side:
+above 50% means Over or Yes; below 50% means Under or No. A correct Under or No counts as a win.
+Only a probability of exactly 50% means no bet, not a losing bet.
+The [MW1–2 tracker](forecasts/2026-27/tracking/README.md) has every selection and denominator:
+
+| Model | Period | H/D/A correct / all forecasts | Over/Under 2.5 correct / picks | BTTS Yes/No correct / picks | Goal MAE per team |
+| --- | --- | ---: | ---: | ---: | ---: |
+| Dynamic Dixon–Coles | MW1 | 6 / 10 (60%) | 6 / 10 (60%) | 5 / 10 (50%) | 0.890 goals |
+| Elo–Poisson | MW1 | 5 / 10 (50%) | 7 / 10 (70%) | 5 / 10 (50%) | 0.926 goals |
+| Elo–Poisson | MW2 | 5 / 10 (50%) | 4 / 10 (40%) | 6 / 10 (60%) | 1.031 goals |
+| Elo–Poisson | MW1–2 combined | 10 / 20 (50%) | 11 / 20 (55%) | 11 / 20 (55%) | 0.979 goals |
+
+All ten matches were predicted in each available model-round. None of the historical goal-market
+probabilities equals 50%, so both goal markets also have ten picks per available model-round.
+Goal MAE measures the average absolute difference between model-implied expected goals and
+actual goals for each team. Across both rounds, Elo's average miss was **0.979 goals per team**;
+actual scoring exceeded its expectation by **0.166 goals per team** on average.
+These are forecast-goal deviations, not comparisons with observed post-match shot-based xG.
+
+Dixon–Coles had no published MW2 forecast, so its available result is MW1-only. Goal markets
+are retrospective derivations from original frozen forecasts: published lambdas for Elo and an
+exact verified replay of the original DC artifact. The rule was requested on 5 September and
+was not pre-registered. Profit and ROI require actual accepted odds and stakes; these are only
+descriptive hit rates on small, partly different samples.
+See the [MW2 result CSV pack](forecasts/2026-27/matchday-02/results/README.md) and
+[cumulative CSV](forecasts/2026-27/tracking/cumulative_performance.csv).
+
 [![synthetic quality gates](https://github.com/adamlpolansky/ML-sport-prediction-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/adamlpolansky/ML-sport-prediction-lab/actions/workflows/ci.yml)
 
 Leakage-safe pre-match football forecasting components with chronological features, fixed and

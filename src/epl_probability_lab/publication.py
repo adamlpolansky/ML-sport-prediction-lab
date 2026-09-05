@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import io
 import json
 import re
@@ -81,9 +82,28 @@ _RESULTS_TRACKER_DATA = {
     "forecasts/2026-27/matchday-01/results/results.json",
     "forecasts/2026-27/tracking/model_performance.csv",
     "forecasts/2026-27/tracking/model_performance.json",
+    "forecasts/2026-27/matchday-02/results/results.csv",
+    "forecasts/2026-27/matchday-02/results/results.json",
+    "forecasts/2026-27/matchday-02/results/model_scores.csv",
+    "forecasts/2026-27/matchday-02/results/model_summary.csv",
+    "forecasts/2026-27/tracking/betting_selections.csv",
+    "forecasts/2026-27/tracking/cumulative_performance.csv",
+    "forecasts/2026-27/tracking/dc_mw1_goal_markets.json",
+    "forecasts/2026-27/tracking/goal_deviations.csv",
+}
+_MATCHDAY3_DATA = {
+    "forecasts/2026-27/matchday-03/challengers/elo-poisson-v1-post-mw2/forecast.json",
+    "forecasts/2026-27/matchday-03/challengers/elo-poisson-v1-post-mw2/forecast.csv",
+    "forecasts/2026-27/matchday-03/challengers/elo-poisson-v1-post-mw2/coverage.json",
+    "forecasts/2026-27/matchday-03/challengers/elo-poisson-v1-post-mw2/update.json",
 }
 _APPROVED_DATA = (
-    _SAFE_DATA | _FORECAST_DATA | _CHALLENGER_DATA | _MATCHDAY2_UPDATE_DATA | _RESULTS_TRACKER_DATA
+    _SAFE_DATA
+    | _FORECAST_DATA
+    | _CHALLENGER_DATA
+    | _MATCHDAY2_UPDATE_DATA
+    | _RESULTS_TRACKER_DATA
+    | _MATCHDAY3_DATA
 )
 _TEXT_SUFFIXES = {
     "",
@@ -382,6 +402,16 @@ def inspect_paths(items: Iterable[tuple[str, bytes]]) -> list[PublicationViolati
     violations: list[PublicationViolation] = []
     for raw_path, content in items:
         path = _normalized(raw_path)
+        if path in _MATCHDAY3_DATA:
+            from .matchday_three_release import PUBLIC_ARTIFACT_SHA256
+
+            if hashlib.sha256(content).hexdigest() != PUBLIC_ARTIFACT_SHA256.get(Path(path)):
+                violations.append(PublicationViolation(path, "immutable MW3 artifact changed"))
+        if path == "forecasts/2026-27/tracking/dc_mw1_goal_markets.json" and (
+            hashlib.sha256(content).hexdigest()
+            != "41c1c1c129be9d9e4e43fff18a4ee478f9f49f7547b3561d63a49853dcadcd98"
+        ):
+            violations.append(PublicationViolation(path, "frozen DC market supplement changed"))
         violations.extend(PublicationViolation(path, reason) for reason in _path_findings(path))
         suffix = PurePosixPath(path).suffix.lower()
         if suffix in _TEXT_SUFFIXES:
@@ -412,6 +442,19 @@ def inspect_paths(items: Iterable[tuple[str, bytes]]) -> list[PublicationViolati
     return violations
 
 
+def _matchday3_pack_findings(items: Iterable[tuple[str, bytes]]) -> list[PublicationViolation]:
+    by_path = {_normalized(path): content for path, content in items}
+    if not any(path in by_path for path in _MATCHDAY3_DATA):
+        return []
+    from .matchday_three_release import MatchdayThreeError, validate_release_contents
+
+    try:
+        validate_release_contents(by_path)
+    except (MatchdayThreeError, UnicodeDecodeError, ValueError, KeyError, TypeError) as exc:
+        return [PublicationViolation("forecasts/2026-27/matchday-03", str(exc))]
+    return []
+
+
 def scan_tree(root: Path, *, require_identity: bool = True) -> list[PublicationViolation]:
     """Scan every non-ignored project file, including untracked candidate files."""
 
@@ -438,7 +481,11 @@ def scan_tree(root: Path, *, require_identity: bool = True) -> list[PublicationV
     )
     listed_paths = {relative.as_posix() for relative in relatives}
     release_paths = (
-        _FORECAST_DATA | _CHALLENGER_DATA | _MATCHDAY2_UPDATE_DATA | _RESULTS_TRACKER_DATA
+        _FORECAST_DATA
+        | _CHALLENGER_DATA
+        | _MATCHDAY2_UPDATE_DATA
+        | _RESULTS_TRACKER_DATA
+        | _MATCHDAY3_DATA
     )
     for release_path in sorted(release_paths):
         if release_path not in listed_paths and (root / release_path).is_file():
@@ -458,6 +505,7 @@ def scan_tree(root: Path, *, require_identity: bool = True) -> list[PublicationV
     violations.extend(_challenger_pack_findings(items))
     violations.extend(_matchday2_update_pack_findings(items))
     violations.extend(_results_tracker_pack_findings(items))
+    violations.extend(_matchday3_pack_findings(items))
     if require_identity:
         required = ("README.md", "LICENSE", "pyproject.toml", "CITATION.cff")
         by_path = {path: content for path, content in items}
@@ -499,6 +547,7 @@ def scan_archive(path: Path) -> list[PublicationViolation]:
     violations.extend(_challenger_pack_findings(items))
     violations.extend(_matchday2_update_pack_findings(items))
     violations.extend(_results_tracker_pack_findings(items))
+    violations.extend(_matchday3_pack_findings(items))
     return violations
 
 

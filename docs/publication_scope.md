@@ -27,3 +27,14 @@ OpenFootball CC0 data; Adam's forecast dataset and derived scorecards are CC BY 
 guard permits only the exact release paths and schemas, semantically regenerates the result metrics,
 and rejects unapproved results, live fields, odds, provider fields, raw features, private material,
 and fitted parameters.
+
+The 5 September update explicitly includes MW2 results and MW1–2 threshold statistics at the
+named result/tracker paths, plus the partial prospective MW3 release under
+`forecasts/2026-27/matchday-03/challengers/elo-poisson-v1-post-mw2`.
+Its ten-fixture coverage file identifies seven already-started fixtures without attaching
+retrospective predictions. The updated Elo ratings and frozen model coefficients are local
+artifacts; only the forecast and aggregate update manifest are published.
+The exact tracker path `dc_mw1_goal_markets.json` adds ten derived goal-market probabilities
+from a hash-verified replay of the original MW1 artifact, explicitly labelled retrospective.
+`goal_deviations.csv` compares original model expectations against final goals; it contains
+no observed shot-based xG or new feature rows. Neither supplement modifies the original MW1 pack.

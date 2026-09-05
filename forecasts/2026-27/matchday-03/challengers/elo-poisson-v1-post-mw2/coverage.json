@@ -1,0 +1,82 @@
+[
+  {
+    "fixture_key": "epl-mw03-01",
+    "kickoff_utc": "2026-09-04T19:00:00Z",
+    "home_team": "Ipswich Town",
+    "away_team": "Liverpool",
+    "included": false,
+    "reason": "kickoff_passed_before_generation"
+  },
+  {
+    "fixture_key": "epl-mw03-02",
+    "kickoff_utc": "2026-09-05T11:30:00Z",
+    "home_team": "Newcastle United",
+    "away_team": "AFC Bournemouth",
+    "included": false,
+    "reason": "kickoff_passed_before_generation"
+  },
+  {
+    "fixture_key": "epl-mw03-03",
+    "kickoff_utc": "2026-09-05T14:00:00Z",
+    "home_team": "Nottingham Forest",
+    "away_team": "Tottenham Hotspur",
+    "included": false,
+    "reason": "kickoff_passed_before_generation"
+  },
+  {
+    "fixture_key": "epl-mw03-04",
+    "kickoff_utc": "2026-09-05T14:00:00Z",
+    "home_team": "Manchester City",
+    "away_team": "Coventry City",
+    "included": false,
+    "reason": "kickoff_passed_before_generation"
+  },
+  {
+    "fixture_key": "epl-mw03-05",
+    "kickoff_utc": "2026-09-05T14:00:00Z",
+    "home_team": "Brighton & Hove Albion",
+    "away_team": "Leeds United",
+    "included": false,
+    "reason": "kickoff_passed_before_generation"
+  },
+  {
+    "fixture_key": "epl-mw03-06",
+    "kickoff_utc": "2026-09-05T14:00:00Z",
+    "home_team": "Brentford",
+    "away_team": "Sunderland",
+    "included": false,
+    "reason": "kickoff_passed_before_generation"
+  },
+  {
+    "fixture_key": "epl-mw03-07",
+    "kickoff_utc": "2026-09-05T14:00:00Z",
+    "home_team": "Fulham",
+    "away_team": "Crystal Palace",
+    "included": false,
+    "reason": "kickoff_passed_before_generation"
+  },
+  {
+    "fixture_key": "epl-mw03-08",
+    "kickoff_utc": "2026-09-05T16:30:00Z",
+    "home_team": "Hull City",
+    "away_team": "Aston Villa",
+    "included": true,
+    "reason": null
+  },
+  {
+    "fixture_key": "epl-mw03-09",
+    "kickoff_utc": "2026-09-06T13:00:00Z",
+    "home_team": "Everton",
+    "away_team": "Manchester United",
+    "included": true,
+    "reason": null
+  },
+  {
+    "fixture_key": "epl-mw03-10",
+    "kickoff_utc": "2026-09-06T15:30:00Z",
+    "home_team": "Arsenal",
+    "away_team": "Chelsea",
+    "included": true,
+    "reason": null
+  }
+]
