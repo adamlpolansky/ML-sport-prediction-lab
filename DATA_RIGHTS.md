@@ -38,3 +38,8 @@ The named tracker exception also includes `dc_mw1_goal_markets.json`: ten saniti
 and BTTS probabilities derived retrospectively from the original verified frozen Dixon–Coles
 artifact, after exact replay of its published MW1 predictions. It is CC BY 4.0 under the same
 attribution. Neither the frozen model nor its fitted parameters are redistributed.
+
+The seven remaining MW3 estimates in the exact `retrospective` subdirectory of the MW3 release
+are an additional user-requested forecast-only exception. They are CC BY 4.0 under the same
+attribution, explicitly labelled retrospective and unscored. No MW3 results, model parameters,
+updated ratings or new performance metrics are distributed in this supplement.

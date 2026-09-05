@@ -38,3 +38,8 @@ The exact tracker path `dc_mw1_goal_markets.json` adds ten derived goal-market p
 from a hash-verified replay of the original MW1 artifact, explicitly labelled retrospective.
 `goal_deviations.csv` compares original model expectations against final goals; it contains
 no observed shot-based xG or new feature rows. Neither supplement modifies the original MW1 pack.
+
+The user-requested MW3 `retrospective` supplement adds only seven sanitized forecasts, CSV/JSON
+and a frozen-input manifest. The original prospective release and all tracker files are unchanged.
+The new estimates use the exact same post-MW2 state, carry actual post-kickoff generation times,
+and are not evaluated. No third-round result fields or performance metrics are allowed.

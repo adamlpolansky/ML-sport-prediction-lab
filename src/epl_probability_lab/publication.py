@@ -97,6 +97,11 @@ _MATCHDAY3_DATA = {
     "forecasts/2026-27/matchday-03/challengers/elo-poisson-v1-post-mw2/coverage.json",
     "forecasts/2026-27/matchday-03/challengers/elo-poisson-v1-post-mw2/update.json",
 }
+_MATCHDAY3_RETROSPECTIVE_DATA = {
+    "forecasts/2026-27/matchday-03/challengers/elo-poisson-v1-post-mw2/retrospective/forecast.json",
+    "forecasts/2026-27/matchday-03/challengers/elo-poisson-v1-post-mw2/retrospective/forecast.csv",
+    "forecasts/2026-27/matchday-03/challengers/elo-poisson-v1-post-mw2/retrospective/manifest.json",
+}
 _APPROVED_DATA = (
     _SAFE_DATA
     | _FORECAST_DATA
@@ -104,6 +109,7 @@ _APPROVED_DATA = (
     | _MATCHDAY2_UPDATE_DATA
     | _RESULTS_TRACKER_DATA
     | _MATCHDAY3_DATA
+    | _MATCHDAY3_RETROSPECTIVE_DATA
 )
 _TEXT_SUFFIXES = {
     "",
@@ -402,6 +408,13 @@ def inspect_paths(items: Iterable[tuple[str, bytes]]) -> list[PublicationViolati
     violations: list[PublicationViolation] = []
     for raw_path, content in items:
         path = _normalized(raw_path)
+        if path in _MATCHDAY3_RETROSPECTIVE_DATA:
+            from .matchday_three_supplement import HASHES
+
+            if hashlib.sha256(content).hexdigest() != HASHES.get(Path(path)):
+                violations.append(
+                    PublicationViolation(path, "frozen retrospective forecast changed")
+                )
         if path in _MATCHDAY3_DATA:
             from .matchday_three_release import PUBLIC_ARTIFACT_SHA256
 
@@ -455,6 +468,19 @@ def _matchday3_pack_findings(items: Iterable[tuple[str, bytes]]) -> list[Publica
     return []
 
 
+def _retrospective_pack_findings(items: Iterable[tuple[str, bytes]]) -> list[PublicationViolation]:
+    by_path = {_normalized(path): content for path, content in items}
+    if not any(path in by_path for path in _MATCHDAY3_RETROSPECTIVE_DATA):
+        return []
+    from .matchday_three_supplement import validate_contents
+
+    try:
+        validate_contents(by_path)
+    except (ValueError, KeyError, TypeError, UnicodeDecodeError) as exc:
+        return [PublicationViolation("forecasts/2026-27/matchday-03/retrospective", str(exc))]
+    return []
+
+
 def scan_tree(root: Path, *, require_identity: bool = True) -> list[PublicationViolation]:
     """Scan every non-ignored project file, including untracked candidate files."""
 
@@ -486,6 +512,7 @@ def scan_tree(root: Path, *, require_identity: bool = True) -> list[PublicationV
         | _MATCHDAY2_UPDATE_DATA
         | _RESULTS_TRACKER_DATA
         | _MATCHDAY3_DATA
+        | _MATCHDAY3_RETROSPECTIVE_DATA
     )
     for release_path in sorted(release_paths):
         if release_path not in listed_paths and (root / release_path).is_file():
@@ -506,6 +533,7 @@ def scan_tree(root: Path, *, require_identity: bool = True) -> list[PublicationV
     violations.extend(_matchday2_update_pack_findings(items))
     violations.extend(_results_tracker_pack_findings(items))
     violations.extend(_matchday3_pack_findings(items))
+    violations.extend(_retrospective_pack_findings(items))
     if require_identity:
         required = ("README.md", "LICENSE", "pyproject.toml", "CITATION.cff")
         by_path = {path: content for path, content in items}
@@ -548,6 +576,7 @@ def scan_archive(path: Path) -> list[PublicationViolation]:
     violations.extend(_matchday2_update_pack_findings(items))
     violations.extend(_results_tracker_pack_findings(items))
     violations.extend(_matchday3_pack_findings(items))
+    violations.extend(_retrospective_pack_findings(items))
     return violations
 
 

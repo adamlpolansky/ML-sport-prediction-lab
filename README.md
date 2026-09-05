@@ -14,6 +14,27 @@ Three fixtures still have prospective forecasts; seven had passed kickoff at gen
 | 2026-09-06 17:30 | Arsenal — Chelsea | 62.9% | 20.9% | 16.2% | Home | 2.00–0.90 | 55.4% (Over) | 51.4% (Yes) | 1–0 (11.0%) |
 <!-- matchday3-table:end -->
 
+### Remaining seven — retrospective estimates, not evaluated
+
+The [seven-row supplement](forecasts/2026-27/matchday-03/challengers/elo-poisson-v1-post-mw2/retrospective/README.md)
+uses exactly the same frozen post-MW2 state. It was generated after kickoff, is explicitly
+retrospective, and has **not been evaluated**. No MW3 results or live scores were used.
+Together the releases cover all ten fixtures; the original three prospective forecasts stay unchanged.
+
+<!-- mw3-retrospective-table:start -->
+| Kickoff (Prague) | Fixture | Home | Draw | Away | H/D/A pick | Goals H–A | O2.5 | BTTS | Modal |
+| --- | --- | ---: | ---: | ---: | --- | ---: | ---: | ---: | --- |
+| 2026-09-04 21:00 | Ipswich Town — Liverpool | 26.6% | 24.6% | 48.8% | Away | 1.14–1.63 | 52.2% (Over) | 54.6% (Yes) | 1–1 (11.7%) |
+| 2026-09-05 13:30 | Newcastle United — AFC Bournemouth | 42.6% | 25.5% | 31.8% | Home | 1.48–1.24 | 51.0% (Over) | 54.8% (Yes) | 1–1 (12.1%) |
+| 2026-09-05 16:00 | Nottingham Forest — Tottenham Hotspur | 52.2% | 24.0% | 23.8% | Home | 1.70–1.07 | 52.3% (Over) | 53.7% (Yes) | 1–1 (11.4%) |
+| 2026-09-05 16:00 | Manchester City — Coventry City | 76.8% | 14.9% | 8.3% | Home | 2.52–0.71 | 62.6% (Over) | 46.7% (No) | 2–0 (12.6%) |
+| 2026-09-05 16:00 | Brighton & Hove Albion — Leeds United | 50.4% | 24.4% | 25.2% | Home | 1.66–1.10 | 52.0% (Over) | 53.9% (Yes) | 1–1 (11.6%) |
+| 2026-09-05 16:00 | Brentford — Sunderland | 50.5% | 24.4% | 25.1% | Home | 1.66–1.10 | 52.0% (Over) | 53.9% (Yes) | 1–1 (11.6%) |
+| 2026-09-05 16:00 | Fulham — Crystal Palace | 46.5% | 25.1% | 28.4% | Home | 1.56–1.17 | 51.4% (Over) | 54.5% (Yes) | 1–1 (11.9%) |
+<!-- mw3-retrospective-table:end -->
+
+The result statistics below still cover MW1–2 only. No MW3 scoring is added to the tracker.
+
 Times are Europe/Prague. The H/D/A pick is the highest-probability outcome in every match,
 including a draw when it ranks first; there is no confidence threshold for this metric.
 For **Over/Under 2.5** and **BTTS Yes/No** separately, pick the more probable side:

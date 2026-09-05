@@ -57,6 +57,7 @@ credentials/
 !forecasts/2026-27/matchday-02/results/model_scores.csv
 !forecasts/2026-27/matchday-02/results/model_summary.csv
 !forecasts/2026-27/matchday-03/challengers/elo-poisson-v1-post-mw2/forecast.csv
+!forecasts/2026-27/matchday-03/challengers/elo-poisson-v1-post-mw2/retrospective/forecast.csv
 
 # Provider payloads, snapshots and operational records
 data/raw/

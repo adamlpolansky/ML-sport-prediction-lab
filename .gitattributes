@@ -16,3 +16,5 @@ forecasts/2026-27/matchday-02/results/README.md text eol=lf
 forecasts/2026-27/matchday-02/results/provenance.md text eol=lf
 forecasts/2026-27/matchday-03/challengers/elo-poisson-v1-post-mw2/*.json text eol=lf
 forecasts/2026-27/matchday-03/challengers/elo-poisson-v1-post-mw2/*.csv text eol=lf
+forecasts/2026-27/matchday-03/challengers/elo-poisson-v1-post-mw2/retrospective/*.json text eol=lf
+forecasts/2026-27/matchday-03/challengers/elo-poisson-v1-post-mw2/retrospective/*.csv text eol=lf
