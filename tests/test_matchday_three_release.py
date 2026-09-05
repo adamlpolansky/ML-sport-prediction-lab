@@ -39,6 +39,27 @@ def test_table_labels_under_and_btts_no_when_their_opposites_are_below_half():
     assert "30.0% (No)" in table
 
 
+def test_markdown_line_endings_are_portable_but_changed_table_content_is_rejected():
+    paths = (
+        release.JSON_PATH,
+        release.CSV_PATH,
+        release.COVERAGE_PATH,
+        release.UPDATE_PATH,
+        release.README_PATH,
+        release.PROVENANCE_PATH,
+        release.ROOT_README_PATH,
+    )
+    contents = {path: (ROOT / path).read_bytes() for path in paths}
+    for path in (release.README_PATH, release.ROOT_README_PATH):
+        contents[path] = contents[path].replace(b"\r\n", b"\n").replace(b"\n", b"\r\n")
+    assert len(release.validate_release_contents(contents)) == 3
+    contents[release.README_PATH] = contents[release.README_PATH].replace(
+        b"H/D/A pick", b"Incorrect pick"
+    )
+    with pytest.raises(release.MatchdayThreeError, match="README table differs"):
+        release.validate_release_contents(contents)
+
+
 @pytest.mark.parametrize("field", ["p_home", "p_over_2_5", "p_btts", "tail_mass"])
 def test_one_probability_cannot_drift_from_coherent_score_distribution(field):
     rows = _rows()

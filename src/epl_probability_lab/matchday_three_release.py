@@ -291,7 +291,7 @@ def validate_release_contents(contents: Mapping[str | Path, bytes]) -> list[dict
     update = json.loads(items[UPDATE_PATH])
     validate_update(update, rows, coverage)
     for path in (README_PATH, ROOT_README_PATH):
-        document = items[path].decode()
+        document = items[path].decode().replace("\r\n", "\n")
         if (
             document.count(TABLE_START) != 1
             or document.count(TABLE_END) != 1
